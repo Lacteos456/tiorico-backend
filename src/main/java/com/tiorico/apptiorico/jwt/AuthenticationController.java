@@ -1,19 +1,19 @@
 package com.tiorico.apptiorico.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tiorico.apptiorico.users.User;
 import com.tiorico.apptiorico.users.UserDetailsServiceImpl;
+
+import java.security.Principal;
 
 @RestController
 @CrossOrigin("*")
@@ -24,6 +24,9 @@ public class AuthenticationController
 	
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 	
 	@Autowired
 	private JwtUtils jwtUtils;
@@ -53,5 +56,11 @@ public class AuthenticationController
         } catch (BadCredentialsException badCredentialsException) {
             throw new Exception("Credenciales invalidas: " + badCredentialsException.getMessage());
         }
+    }
+
+    @GetMapping("/current-user")
+    public User getCurrentUser(Principal principal)
+    {
+        return (User) this.userDetailsService.loadUserByUsername(principal.getName());
     }
 }
