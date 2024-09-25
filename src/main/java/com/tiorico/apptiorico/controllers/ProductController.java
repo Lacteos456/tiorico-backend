@@ -4,6 +4,7 @@ import com.tiorico.apptiorico.dtos.ProductDTO;
 import com.tiorico.apptiorico.mappers.ProductMapper;
 import com.tiorico.apptiorico.models.Product;
 import com.tiorico.apptiorico.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class ProductController
     }
 
     @PostMapping("/")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         Product product = productMapper.toEntity(productDTO);
         Product savedProduct = productService.save(product);
         return ResponseEntity.ok(productMapper.toDTO(savedProduct));

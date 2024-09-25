@@ -2,7 +2,6 @@ package com.tiorico.apptiorico.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +31,6 @@ public class CategoryDTO
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Integer> productIds;
 
-    @NotNull(message = "La categoría debe tener un estado activo")
     private Boolean isActive;
 
     @Size(max = 500, message = "Los campos personalizados no pueden exceder los 500 caracteres")

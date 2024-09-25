@@ -4,6 +4,7 @@ import com.tiorico.apptiorico.dtos.CategoryDTO;
 import com.tiorico.apptiorico.mappers.CategoryMapper;
 import com.tiorico.apptiorico.models.Category;
 import com.tiorico.apptiorico.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class CategoryController
     }
 
     @PostMapping("/")
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         Category category = categoryMapper.toEntity(categoryDTO);
         Category savedCategory = categoryService.save(category);
         return ResponseEntity.ok(categoryMapper.toDTO(savedCategory));

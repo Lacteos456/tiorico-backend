@@ -51,7 +51,8 @@ public class CategoryMapper
         category.setId(dto.getId());
         category.setName(dto.getName());
         category.setDescription(dto.getDescription());
-        category.setIsActive(dto.getIsActive());
+        // Establecer isActive a true por defecto si no se proporciona
+        category.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
         category.setCustomFields(dto.getCustomFields());
 
         return category;
