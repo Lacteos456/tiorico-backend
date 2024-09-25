@@ -1,7 +1,8 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.repositories;
 
 import java.util.Optional;
 
+import com.tiorico.apptiorico.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.tiorico.apptiorico.roles;
+package com.tiorico.apptiorico.models;
 
 import org.springframework.security.core.GrantedAuthority;
 

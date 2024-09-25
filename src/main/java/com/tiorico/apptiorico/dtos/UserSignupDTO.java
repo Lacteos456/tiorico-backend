@@ -1,4 +1,4 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

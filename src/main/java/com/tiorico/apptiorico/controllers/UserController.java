@@ -1,10 +1,13 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.controllers;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.tiorico.apptiorico.models.User;
+import com.tiorico.apptiorico.services.UserService;
+import com.tiorico.apptiorico.dtos.UserSignupDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tiorico.apptiorico.exceptions.ErrorResponse;
 import com.tiorico.apptiorico.exceptions.UserException;
-import com.tiorico.apptiorico.roles.Rol;
-import com.tiorico.apptiorico.userRoles.UserRol;
+import com.tiorico.apptiorico.models.Rol;
+import com.tiorico.apptiorico.models.UserRol;
 
 import jakarta.validation.Valid;
 

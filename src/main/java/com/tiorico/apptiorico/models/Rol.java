@@ -1,10 +1,8 @@
-package com.tiorico.apptiorico.roles;
+package com.tiorico.apptiorico.models;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.tiorico.apptiorico.userRoles.UserRol;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

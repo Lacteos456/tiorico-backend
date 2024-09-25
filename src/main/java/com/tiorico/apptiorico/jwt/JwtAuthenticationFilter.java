@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.tiorico.apptiorico.users.UserDetailsServiceImpl;
+import com.tiorico.apptiorico.services.serviceImplements.UserDetailsServiceImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

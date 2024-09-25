@@ -1,14 +1,17 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.services.serviceImplements;
 
 import java.util.Optional;
 import java.util.Set;
 
+import com.tiorico.apptiorico.models.User;
+import com.tiorico.apptiorico.repositories.UserRepository;
+import com.tiorico.apptiorico.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tiorico.apptiorico.exceptions.UserException;
-import com.tiorico.apptiorico.roles.RolRepository;
-import com.tiorico.apptiorico.userRoles.UserRol;
+import com.tiorico.apptiorico.repositories.RolRepository;
+import com.tiorico.apptiorico.models.UserRol;
 
 @Service
 public class UserServiceImpl implements UserService

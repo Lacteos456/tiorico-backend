@@ -1,8 +1,9 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.services;
 
 import java.util.Set;
 
-import com.tiorico.apptiorico.userRoles.UserRol;
+import com.tiorico.apptiorico.models.User;
+import com.tiorico.apptiorico.models.UserRol;
 
 public interface UserService
 {

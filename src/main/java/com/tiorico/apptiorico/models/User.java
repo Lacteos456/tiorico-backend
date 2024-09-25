@@ -1,4 +1,4 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.models;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -9,8 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tiorico.apptiorico.roles.Authority;
-import com.tiorico.apptiorico.userRoles.UserRol;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

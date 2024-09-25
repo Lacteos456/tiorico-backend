@@ -1,5 +1,7 @@
-package com.tiorico.apptiorico.users;
+package com.tiorico.apptiorico.services.serviceImplements;
 
+import com.tiorico.apptiorico.models.User;
+import com.tiorico.apptiorico.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

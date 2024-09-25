@@ -10,8 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import com.tiorico.apptiorico.users.User;
-import com.tiorico.apptiorico.users.UserDetailsServiceImpl;
+import com.tiorico.apptiorico.models.User;
+import com.tiorico.apptiorico.services.serviceImplements.UserDetailsServiceImpl;
 
 import java.security.Principal;
 
