@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserSignupDTO
+public class UserDTO
 {
 	@NotBlank(message = "El nombre de usuario no puede estar vacío")
     private String username;
