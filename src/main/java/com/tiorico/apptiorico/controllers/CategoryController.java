@@ -22,7 +22,7 @@ public class CategoryController
     @Autowired
     private CategoryMapper categoryMapper;
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         List<Category> categories = categoryService.findAll();
         List<CategoryDTO> categoryDTOs = categories.stream()
