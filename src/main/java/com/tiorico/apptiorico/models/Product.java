@@ -1,12 +1,14 @@
 package com.tiorico.apptiorico.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -46,6 +48,10 @@ public class Product
     @JoinColumn(name = "category_id")
     @JsonBackReference
     private Category category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<DailyAssignment> dailyAssignments;
 
     @PrePersist
     protected void onCreate() {
