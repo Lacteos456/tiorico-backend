@@ -1,5 +1,6 @@
 package com.tiorico.apptiorico.services;
 
+import java.util.List;
 import java.util.Set;
 
 import com.tiorico.apptiorico.models.User;
@@ -26,4 +27,6 @@ public interface UserService
     public boolean existsByEmail(String email);
     
     public boolean deleteUserById(Integer userId);
+
+	public List<User> getNormalUsers();
 }

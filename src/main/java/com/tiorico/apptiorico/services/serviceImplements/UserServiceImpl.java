@@ -1,5 +1,6 @@
 package com.tiorico.apptiorico.services.serviceImplements;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -130,7 +131,12 @@ public class UserServiceImpl implements UserService
         }
         return false;
     }
-    
+
+    @Override
+    public List<User> getNormalUsers() {
+        return userRepository.findAllByNormalRole();
+    }
+
     @Override
     public User getUserById(Integer userId) throws UserException.UserNotFoundException {
         return userRepository.findById(userId).orElse(null);

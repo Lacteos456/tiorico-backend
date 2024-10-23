@@ -1,6 +1,7 @@
 package com.tiorico.apptiorico.controllers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.tiorico.apptiorico.models.User;
@@ -96,5 +97,11 @@ public class UserController
         } else {
             throw new IllegalArgumentException("Invalid deletion type");
         }
+    }
+
+    @GetMapping("/normal")
+    public ResponseEntity<List<User>> getNormalUsers() {
+        List<User> normalUsers = userService.getNormalUsers();
+        return ResponseEntity.ok(normalUsers);
     }
 }
