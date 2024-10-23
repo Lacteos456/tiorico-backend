@@ -34,7 +34,6 @@ public class DailyAssignmentController
     @Autowired
     private DailyAssignmentMapper dailyAssignmentMapper;
 
-    // Get all daily assignments
     @GetMapping("/")
     public ResponseEntity<List<DailyAssignmentDTO>> getDailyAssignments() {
         List<DailyAssignment> assignments = dailyAssignmentService.findAll();
@@ -44,7 +43,6 @@ public class DailyAssignmentController
         return ResponseEntity.ok(assignmentDTOs);
     }
 
-    // Get a daily assignment by ID
     @GetMapping("/{id}")
     public ResponseEntity<DailyAssignmentDTO> getDailyAssignmentById(@PathVariable Integer id) {
         DailyAssignment assignment = dailyAssignmentService.findById(id);
