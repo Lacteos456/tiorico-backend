@@ -3,6 +3,7 @@ package com.tiorico.apptiorico.controllers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.tiorico.apptiorico.models.User;
 import com.tiorico.apptiorico.services.UserService;
@@ -100,8 +101,18 @@ public class UserController
     }
 
     @GetMapping("/normal")
-    public ResponseEntity<List<User>> getNormalUsers() {
+    public ResponseEntity<List<UserDTO>> getNormalUsers() {
         List<User> normalUsers = userService.getNormalUsers();
-        return ResponseEntity.ok(normalUsers);
+
+        // Convertir la lista de usuarios en una lista de UserDTO
+        List<UserDTO> normalUsersDTO = normalUsers.stream()
+                .map(user -> UserDTO.builder()
+                        .username(user.getUsername())
+                        .email(user.getEmail())
+                        .phone(user.getPhone())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(normalUsersDTO);
     }
 }
