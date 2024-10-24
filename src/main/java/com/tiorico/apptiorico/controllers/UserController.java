@@ -107,6 +107,7 @@ public class UserController
         // Convertir la lista de usuarios en una lista de UserDTO
         List<UserDTO> normalUsersDTO = normalUsers.stream()
                 .map(user -> UserDTO.builder()
+                        .id(user.getId())
                         .username(user.getUsername())
                         .email(user.getEmail())
                         .phone(user.getPhone())

@@ -15,6 +15,8 @@ import jakarta.validation.constraints.Size;
 @Builder
 public class UserDTO
 {
+    private Integer id;
+
 	@NotBlank(message = "El nombre de usuario no puede estar vacío")
     private String username;
     
