@@ -22,7 +22,7 @@ public class ProductController
     @Autowired
     private ProductMapper productMapper;
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<Product> products = productService.findAll();
         List<ProductDTO> productDTOs = products.stream()
