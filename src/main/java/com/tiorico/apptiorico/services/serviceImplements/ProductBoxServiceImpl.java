@@ -53,6 +53,14 @@ public class ProductBoxServiceImpl implements ProductBoxService
     }
 
     @Override
+    public List<ProductBoxDTO> getAllProductBoxesByProductId(Integer productId) {
+        List<ProductBox> productBoxes = productBoxRepository.findProductBoxByProduct_Id(productId);
+        return productBoxes.stream()
+                .map(productBoxMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ProductBoxDTO updateProductBox(Integer id, ProductBoxDTO productBoxDTO) {
         ProductBox productBox = productBoxRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ProductBox no encontrado"));
