@@ -67,12 +67,6 @@ public class DailyAssignmentController
             return ResponseEntity.badRequest().build();
         }
 
-        // Verificar si ya existe una asignación diaria para el mismo usuario y producto
-        DailyAssignment existingAssignment = dailyAssignmentService.findByUserIdAndProductId(userId, productId);
-        if (existingAssignment != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
-        }
-
         DailyAssignment assignment = dailyAssignmentMapper.toEntity(assignmentDTO, user, product);
         DailyAssignment savedAssignment = dailyAssignmentService.save(assignment);
 
@@ -99,13 +93,7 @@ public class DailyAssignmentController
         // Verificar si la asignación diaria existe
         DailyAssignment existingAssignment = dailyAssignmentService.findById(id);
         if (existingAssignment == null) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
-        }
-
-        // Verificar si ya existe una asignación diaria para el mismo usuario y producto
-        DailyAssignment duplicateAssignment = dailyAssignmentService.findByUserIdAndProductId(userId, productId);
-        if (duplicateAssignment != null && duplicateAssignment.getId() != id) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
+            return ResponseEntity.notFound().build();
         }
 
         // Actualizar la asignación diaria
