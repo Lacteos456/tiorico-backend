@@ -138,6 +138,11 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
+    public List<User> getAdminUsers() {
+        return userRepository.findAllByAdminRole();
+    }
+
+    @Override
     public User getUserById(Integer userId) throws UserException.UserNotFoundException {
         return userRepository.findById(userId).orElse(null);
     }

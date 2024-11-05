@@ -116,4 +116,21 @@ public class UserController
 
         return ResponseEntity.ok(normalUsersDTO);
     }
+
+    @GetMapping("/admin")
+    public ResponseEntity<List<UserDTO>> getAdminUsers() {
+        List<User> adminUsers = userService.getAdminUsers();
+
+        // Convertir la lista de usuarios en una lista de UserDTO
+        List<UserDTO> adminUsersDTO = adminUsers.stream()
+                .map(user -> UserDTO.builder()
+                        .id(user.getId())
+                        .username(user.getUsername())
+                        .email(user.getEmail())
+                        .phone(user.getPhone())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(adminUsersDTO);
+    }
 }

@@ -19,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Integer>
 
     @Query("SELECT u FROM users u JOIN u.userRoles ur WHERE ur.rol.name = 'NORMAL'")
     List<User> findAllByNormalRole();
+
+    @Query("SELECT u FROM users u JOIN u.userRoles ur WHERE ur.rol.name = 'ADMIN'")
+    List<User> findAllByAdminRole();
 }

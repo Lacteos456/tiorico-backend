@@ -29,4 +29,6 @@ public interface UserService
     public boolean deleteUserById(Integer userId);
 
 	public List<User> getNormalUsers();
+
+	public List<User> getAdminUsers();
 }
