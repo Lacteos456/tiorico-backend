@@ -1,35 +1,32 @@
 package com.tiorico.apptiorico.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products")
-public class Product
+@Table(name = "product_boxes")
+public class ProductBox
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    private String description;
+    @Column(name = "units_per_box", nullable = false)
+    private Integer unitsPerBox;
 
-    private double price;
-
-    private Integer stock;
-
-    private String image;
+    @Column(name = "box_price", nullable = false)
+    private Double boxPrice;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -39,23 +36,6 @@ public class Product
 
     @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean isActive;
-
-    @Lob
-    @Column(name = "custom_fields")
-    private String customFields;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
-    private Category category;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<DailyAssignment> dailyAssignments;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ProductBox> productBoxes;
 
     @PrePersist
     protected void onCreate() {
