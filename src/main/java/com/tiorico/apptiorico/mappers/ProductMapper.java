@@ -19,7 +19,6 @@ public class ProductMapper
         dto.setName(product.getName());
         dto.setDescription(product.getDescription());
         dto.setPrice(product.getPrice());
-        dto.setStock(product.getStock());
         dto.setImage(product.getImage());
         dto.setCreatedAt(product.getCreatedAt());
         dto.setUpdatedAt(product.getUpdatedAt());
@@ -41,7 +40,6 @@ public class ProductMapper
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
-        product.setStock(dto.getStock());
         product.setImage(dto.getImage());
         product.setCustomFields(dto.getCustomFields());
 

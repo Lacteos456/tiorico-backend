@@ -57,6 +57,10 @@ public class Product
     @JsonManagedReference
     private List<ProductBox> productBoxes;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ProductSupply> productSupply;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

@@ -16,9 +16,6 @@ public class ProductBoxDTO
     @NotNull(message = "El ID del producto es obligatorio")
     private Integer productId;
 
-    @Min(value = 1, message = "La cantidad de unidades por caja debe ser al menos 1")
-    private Integer unitsPerBox;
-
     @Min(value = 0, message = "El precio de la caja no puede ser negativo")
     private Double boxPrice;
 

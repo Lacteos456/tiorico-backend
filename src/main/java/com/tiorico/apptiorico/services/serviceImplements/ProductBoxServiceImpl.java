@@ -65,7 +65,6 @@ public class ProductBoxServiceImpl implements ProductBoxService
         ProductBox productBox = productBoxRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ProductBox no encontrado"));
 
-        productBox.setUnitsPerBox(productBoxDTO.getUnitsPerBox());
         productBox.setBoxPrice(productBoxDTO.getBoxPrice());
 
         ProductBox updatedProductBox = productBoxRepository.save(productBox);

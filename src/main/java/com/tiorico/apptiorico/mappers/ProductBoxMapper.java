@@ -15,7 +15,6 @@ public class ProductBoxMapper
         ProductBoxDTO dto = new ProductBoxDTO();
         dto.setId(productBox.getId());
         dto.setProductId(productBox.getProduct().getId());
-        dto.setUnitsPerBox(productBox.getUnitsPerBox());
         dto.setBoxPrice(productBox.getBoxPrice());
 
         return dto;
@@ -28,7 +27,6 @@ public class ProductBoxMapper
 
         ProductBox productBox = new ProductBox();
         productBox.setId(dto.getId());
-        productBox.setUnitsPerBox(dto.getUnitsPerBox());
         productBox.setBoxPrice(dto.getBoxPrice());
 
         return productBox;

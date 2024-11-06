@@ -24,9 +24,6 @@ public class ProductDTO
     @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que 0")
     private double price;
 
-    @Min(value = 0, message = "El stock no puede ser menor a 0")
-    private Integer stock;
-
     @NotBlank(message = "El campo de la imagen no puede estar vacío")
     private String image;
 
