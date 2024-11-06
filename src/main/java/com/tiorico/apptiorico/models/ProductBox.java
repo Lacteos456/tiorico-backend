@@ -1,5 +1,6 @@
 package com.tiorico.apptiorico.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,11 +23,12 @@ public class ProductBox
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonBackReference
     private Product product;
 
-    @OneToMany(mappedBy = "product_boxes", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "productBox", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ProductBox> productBoxes;
+    private List<ProductBoxSupply> productBoxSupplies;
 
     @Column(name = "units_per_box", nullable = false)
     private Integer unitsPerBox;

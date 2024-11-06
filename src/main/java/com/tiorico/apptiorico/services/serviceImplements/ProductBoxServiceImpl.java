@@ -75,4 +75,9 @@ public class ProductBoxServiceImpl implements ProductBoxService
     public void deleteProductBox(Integer id) {
         productBoxRepository.deleteById(id);
     }
+
+    @Override
+    public ProductBox save(ProductBox productBox) {
+        return productBoxRepository.save(productBox);
+    }
 }

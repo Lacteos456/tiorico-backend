@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/product-supplies")
+@RequestMapping("/api/v1/product-supplies")
 @CrossOrigin("*")
 public class ProductSupplyController
 {
@@ -31,7 +31,7 @@ public class ProductSupplyController
 
     @PostMapping("/")
     public ResponseEntity<ProductSupplyDTO> createProductSupply(@RequestBody ProductSupplyDTO productSupplyDTO) {
-        ProductSupply supply = productSupplyMapper.toEntity(productSupplyDTO, null, null);
+        ProductSupply supply = productSupplyMapper.toEntity(productSupplyDTO);
         ProductSupply savedSupply = productSupplyService.saveSupply(supply);
         return ResponseEntity.ok(productSupplyMapper.toDTO(savedSupply));
     }

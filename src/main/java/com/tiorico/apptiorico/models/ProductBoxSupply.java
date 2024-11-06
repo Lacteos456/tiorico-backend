@@ -1,5 +1,6 @@
 package com.tiorico.apptiorico.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class ProductBoxSupply
 
     @ManyToOne
     @JoinColumn(name = "product_box_id", nullable = false)
+    @JsonBackReference
     private ProductBox productBox;
 
     private Integer boxQuantity;

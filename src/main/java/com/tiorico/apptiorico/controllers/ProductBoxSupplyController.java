@@ -31,14 +31,13 @@ public class ProductBoxSupplyController
 
     @PostMapping("/")
     public ResponseEntity<ProductBoxSupplyDTO> createProductBoxSupply(@RequestBody ProductBoxSupplyDTO productBoxSupplyDTO) {
-        ProductBoxSupply supply = productBoxSupplyMapper.toEntity(productBoxSupplyDTO, null, null);
-        ProductBoxSupply savedSupply = productBoxSupplyService.saveSupply(supply);
+        ProductBoxSupply savedSupply = productBoxSupplyService.saveSupply(productBoxSupplyDTO);
         return ResponseEntity.ok(productBoxSupplyMapper.toDTO(savedSupply));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductBoxSupply(@PathVariable Long id) {
-        productBoxSupplyService.saveSupply(null);
+    public ResponseEntity<Void> deleteProductBoxSupply(@PathVariable Integer id) {
+        productBoxSupplyService.deleteSupply(id);
         return ResponseEntity.noContent().build();
     }
 }

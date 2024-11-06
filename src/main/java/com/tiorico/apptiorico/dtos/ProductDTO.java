@@ -21,6 +21,8 @@ public class ProductDTO
     @Size(min = 3, max = 150, message = "La descripcion del producto debe tener entre 3 y 150 caracteres")
     private String description;
 
+    private Integer stock;
+
     @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que 0")
     private double price;
 

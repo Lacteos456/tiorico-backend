@@ -27,7 +27,8 @@ public class Product
 
     private double price;
 
-    private Integer stock;
+    @Column(nullable = false)
+    private Integer stock = 0;
 
     private String image;
 
@@ -59,7 +60,7 @@ public class Product
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ProductSupply> productSupply;
+    private List<ProductSupply> productSupplies;
 
     @PrePersist
     protected void onCreate() {

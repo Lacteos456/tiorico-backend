@@ -2,6 +2,7 @@ package com.tiorico.apptiorico.services.serviceImplements;
 
 import com.tiorico.apptiorico.models.Product;
 import com.tiorico.apptiorico.models.ProductSupply;
+import com.tiorico.apptiorico.repositories.ProductRepository;
 import com.tiorico.apptiorico.repositories.ProductSupplyRepository;
 import com.tiorico.apptiorico.services.ProductService;
 import com.tiorico.apptiorico.services.ProductSupplyService;
@@ -18,12 +19,22 @@ public class ProductSupplyServiceImpl implements ProductSupplyService
     private ProductSupplyRepository productSupplyRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ProductService productService;
 
     @Override
     @Transactional
     public ProductSupply saveSupply(ProductSupply supply) {
-        Product product = supply.getProduct();
+        // Validar que el producto esté asignado en el suministro
+        if (supply.getProduct() == null) {
+            throw new RuntimeException("El producto asociado al suministro es nulo.");
+        }
+
+        // Verificar que el producto existe en la base de datos y asignarlo
+        Product product = productRepository.findById(supply.getProduct().getId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         product.setStock(product.getStock() + supply.getSupplyQuantity());
         productService.save(product);
 

@@ -19,5 +19,7 @@ public class ProductBoxDTO
     @Min(value = 0, message = "El precio de la caja no puede ser negativo")
     private Double boxPrice;
 
+    private Integer unitsPerBox;
+
     private Boolean isActive = true;
 }

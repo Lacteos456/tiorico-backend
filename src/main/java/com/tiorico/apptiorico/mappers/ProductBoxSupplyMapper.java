@@ -10,7 +10,14 @@ import org.springframework.stereotype.Component;
 public class ProductBoxSupplyMapper
 {
     public ProductBoxSupplyDTO toDTO(ProductBoxSupply supply) {
-        return new ProductBoxSupplyDTO(supply.getId(), supply.getProvider().getId(), supply.getProductBox().getId(), supply.getBoxQuantity(), supply.getBoxPrice(), supply.getSupplyDate());
+        return new ProductBoxSupplyDTO(
+                supply.getId(),
+                supply.getProvider().getId(),
+                supply.getProductBox().getId(),
+                supply.getBoxQuantity(),
+                supply.getBoxPrice(),
+                supply.getSupplyDate()
+        );
     }
 
     public ProductBoxSupply toEntity(ProductBoxSupplyDTO dto, Provider provider, ProductBox productBox) {
