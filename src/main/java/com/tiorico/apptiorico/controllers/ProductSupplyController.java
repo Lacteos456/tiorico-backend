@@ -29,6 +29,14 @@ public class ProductSupplyController
                 .toList();
     }
 
+    @GetMapping("/")
+    public List<ProductSupplyDTO> getAllProductSupplies() {
+        return productSupplyService.findAll()
+                .stream()
+                .map(productSupplyMapper::toDTO)
+                .toList();
+    }
+
     @PostMapping("/")
     public ResponseEntity<ProductSupplyDTO> createProductSupply(@RequestBody ProductSupplyDTO productSupplyDTO) {
         ProductSupply supply = productSupplyMapper.toEntity(productSupplyDTO);

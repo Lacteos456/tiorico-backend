@@ -56,6 +56,11 @@ public class ProductSupplyServiceImpl implements ProductSupplyService
     }
 
     @Override
+    public List<ProductSupply> findAll() {
+        return productSupplyRepository.findAll();
+    }
+
+    @Override
     @Transactional
     public void deleteSupply(Integer supplyId) {
         ProductSupply supply = productSupplyRepository.findById(supplyId).orElseThrow();
