@@ -1,6 +1,7 @@
 package com.tiorico.apptiorico.services.serviceImplements;
 
 import com.tiorico.apptiorico.exceptions.UserException;
+import com.tiorico.apptiorico.models.Category;
 import com.tiorico.apptiorico.models.Product;
 import com.tiorico.apptiorico.services.ProductService;
 import com.tiorico.apptiorico.repositories.ProductRepository;
@@ -16,8 +17,8 @@ public class ProductServiceImpl implements ProductService
     private ProductRepository productRepository;
 
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Product> findActiveProducts() {
+        return productRepository.findByIsActiveTrue();
     }
 
     @Override
@@ -33,5 +34,10 @@ public class ProductServiceImpl implements ProductService
     @Override
     public Product getProductById(Integer productId) throws UserException.UserNotFoundException  {
         return productRepository.findById(productId).orElse(null);
+    }
+
+    @Override
+    public Product updateProduct(Product product) {
+        return productRepository.save(product);
     }
 }

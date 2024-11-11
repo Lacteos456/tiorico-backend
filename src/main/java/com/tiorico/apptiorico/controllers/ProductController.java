@@ -26,7 +26,7 @@ public class ProductController
 
     @GetMapping("/all")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<Product> products = productService.findAll();
+        List<Product> products = productService.findActiveProducts();
         List<ProductDTO> productDTOs = products.stream()
                 .map(productMapper::toDTO)
                 .toList();
@@ -47,5 +47,25 @@ public class ProductController
         Product product = productMapper.toEntity(productDTO);
         Product savedProduct = productService.save(product);
         return ResponseEntity.ok(productMapper.toDTO(savedProduct));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductDTO productDTO) {
+        Product productToUpdate = productMapper.toEntity(productDTO);
+        productToUpdate.setId(id);
+        Product updatedProduct = productService.updateProduct(productToUpdate);
+        return ResponseEntity.ok(productMapper.toDTO(updatedProduct));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+        Product product = productService.findById(id);
+        if (product != null) {
+            product.setIsActive(false); // Marcado como inactivo
+            productService.updateProduct(product);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
