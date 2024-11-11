@@ -20,6 +20,11 @@ public class CategoryServiceImpl implements CategoryService
     }
 
     @Override
+    public List<Category> findActiveCategories() {
+        return categoryRepository.findByIsActiveTrue();
+    }
+
+    @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
     }

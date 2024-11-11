@@ -17,9 +17,9 @@ public interface UserRepository extends JpaRepository<User, Integer>
     public User findByUsername(String username);
     Optional<User> findById(Integer id);
 
-    @Query("SELECT u FROM users u JOIN u.userRoles ur WHERE ur.rol.name = 'NORMAL'")
+    @Query("SELECT u FROM users u JOIN u.userRoles ur WHERE ur.rol.name = 'NORMAL' AND u.isActive = true")
     List<User> findAllByNormalRole();
 
-    @Query("SELECT u FROM users u JOIN u.userRoles ur WHERE ur.rol.name = 'ADMIN'")
+    @Query("SELECT u FROM users u JOIN u.userRoles ur WHERE ur.rol.name = 'ADMIN' AND u.isActive = true")
     List<User> findAllByAdminRole();
 }

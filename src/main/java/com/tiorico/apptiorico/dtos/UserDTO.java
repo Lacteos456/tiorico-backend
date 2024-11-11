@@ -30,4 +30,6 @@ public class UserDTO
     
 	@NotBlank(message = "El teléfono no puede estar vacío")
     private String phone;
+
+    private Boolean isActive;
 }

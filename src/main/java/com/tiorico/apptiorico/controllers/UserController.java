@@ -111,6 +111,7 @@ public class UserController
                         .username(user.getUsername())
                         .email(user.getEmail())
                         .phone(user.getPhone())
+                        .isActive(user.getIsActive())
                         .build())
                 .collect(Collectors.toList());
 
@@ -128,6 +129,7 @@ public class UserController
                         .username(user.getUsername())
                         .email(user.getEmail())
                         .phone(user.getPhone())
+                        .isActive(user.getIsActive())
                         .build())
                 .collect(Collectors.toList());
 
