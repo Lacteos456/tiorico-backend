@@ -10,4 +10,6 @@ public interface ProductBoxSupplyService
 {
     List<ProductBoxSupply> findAll();
     ProductBoxSupplyDTO addProductBoxSupply(ProductBoxSupplyDTO dto);
+    ProductBoxSupply findById(Integer id);
+    void updateProductBoxSupply(ProductBoxSupply productBoxSupply);
 }

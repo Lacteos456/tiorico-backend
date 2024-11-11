@@ -25,6 +25,7 @@ public class ProductBoxSupplyMapper
         dto.setProductId(supply.getProduct().getId());
         dto.setBoxQuantity(supply.getBoxQuantity());
         dto.setUnitsPerBox(supply.getUnitsPerBox());
+        dto.setIsActive(supply.getIsActive());
         dto.setBoxPrice(supply.getBoxPrice());
         dto.setSupplyDate(supply.getSupplyDate());
         return dto;
@@ -43,6 +44,8 @@ public class ProductBoxSupplyMapper
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         supply.setProduct(product);
+
+        supply.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
 
         return supply;
     }

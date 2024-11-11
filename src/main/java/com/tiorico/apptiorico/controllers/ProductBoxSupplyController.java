@@ -35,4 +35,16 @@ public class ProductBoxSupplyController
                 .toList();
         return ResponseEntity.ok(productBoxSupplyDTOs);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductBoxSupply(@PathVariable Integer id) {
+        ProductBoxSupply productBoxSupply = productBoxSupplyService.findById(id);
+        if (productBoxSupply != null) {
+            productBoxSupply.setIsActive(false);
+            productBoxSupplyService.updateProductBoxSupply(productBoxSupply);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

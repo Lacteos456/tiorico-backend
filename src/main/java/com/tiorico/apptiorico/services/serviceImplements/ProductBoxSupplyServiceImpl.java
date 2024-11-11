@@ -27,22 +27,43 @@ public class ProductBoxSupplyServiceImpl implements ProductBoxSupplyService
 
     @Override
     public List<ProductBoxSupply> findAll() {
-        return productBoxSupplyRepository.findAll();
+        return productBoxSupplyRepository.findAllActive();
     }
 
     @Override
     @Transactional
     public ProductBoxSupplyDTO addProductBoxSupply(ProductBoxSupplyDTO dto) {
         ProductBoxSupply supply = productBoxSupplyMapper.toEntity(dto);
-        productBoxSupplyRepository.save(supply);
 
-        // Actualizar el stock del producto basado en el suministro de cajas
-        Product product = supply.getProduct();
-        int additionalUnits = supply.getBoxQuantity() * supply.getUnitsPerBox();
-        product.setStock(product.getStock() + additionalUnits);
+        if (supply.getIsActive()) {
+            productBoxSupplyRepository.save(supply);
 
-        productRepository.save(product);
+            // Update the product stock based on box supply if the supply is active
+            Product product = supply.getProduct();
+            int additionalUnits = supply.getBoxQuantity() * supply.getUnitsPerBox();
+            product.setStock(product.getStock() + additionalUnits);
+
+            productRepository.save(product);
+        }
 
         return productBoxSupplyMapper.toDTO(supply);
+    }
+
+    @Override
+    public ProductBoxSupply findById(Integer id) {
+        return productBoxSupplyRepository.findById(id)
+                .orElse(null);
+    }
+
+    @Override
+    public void updateProductBoxSupply(ProductBoxSupply productBoxSupply) {
+        productBoxSupply.setIsActive(false);
+        productBoxSupplyRepository.save(productBoxSupply);
+
+        Product product = productBoxSupply.getProduct();
+        int unitsToSubtract = productBoxSupply.getBoxQuantity() * productBoxSupply.getUnitsPerBox();
+        product.setStock(Math.max(product.getStock() - unitsToSubtract, 0));
+
+        productRepository.save(product);
     }
 }

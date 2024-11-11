@@ -30,5 +30,7 @@ public class ProductBoxSupplyDTO
     @Min(value = 0, message = "El precio de la caja no puede ser negativo")
     private Double boxPrice;
 
+    private Boolean isActive;
+
     private LocalDateTime supplyDate;
 }
