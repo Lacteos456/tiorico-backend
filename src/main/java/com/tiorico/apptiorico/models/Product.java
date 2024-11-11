@@ -56,11 +56,7 @@ public class Product
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ProductBox> productBoxes;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ProductSupply> productSupplies;
+    private List<ProductBoxSupply> productBoxSupplies;
 
     @PrePersist
     protected void onCreate() {

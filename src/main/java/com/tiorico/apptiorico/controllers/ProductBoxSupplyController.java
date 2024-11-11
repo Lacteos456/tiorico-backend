@@ -18,34 +18,9 @@ public class ProductBoxSupplyController
     @Autowired
     private ProductBoxSupplyService productBoxSupplyService;
 
-    @Autowired
-    private ProductBoxSupplyMapper productBoxSupplyMapper;
-
-    @GetMapping("/box/{productBoxId}")
-    public List<ProductBoxSupplyDTO> getBoxSuppliesByBoxId(@PathVariable Integer productBoxId) {
-        return productBoxSupplyService.findByProductBoxId(productBoxId)
-                .stream()
-                .map(productBoxSupplyMapper::toDTO)
-                .toList();
-    }
-
-    @GetMapping("/")
-    public List<ProductBoxSupplyDTO> getAllProductBoxSupplies() {
-        return productBoxSupplyService.findAll()
-                .stream()
-                .map(productBoxSupplyMapper::toDTO)
-                .toList();
-    }
-
-    @PostMapping("/")
-    public ResponseEntity<ProductBoxSupplyDTO> createProductBoxSupply(@RequestBody ProductBoxSupplyDTO productBoxSupplyDTO) {
-        ProductBoxSupply savedSupply = productBoxSupplyService.saveSupply(productBoxSupplyDTO);
-        return ResponseEntity.ok(productBoxSupplyMapper.toDTO(savedSupply));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductBoxSupply(@PathVariable Integer id) {
-        productBoxSupplyService.deleteSupply(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping
+    public ResponseEntity<ProductBoxSupplyDTO> addProductBoxSupply(@RequestBody ProductBoxSupplyDTO dto) {
+        ProductBoxSupplyDTO createdSupply = productBoxSupplyService.addProductBoxSupply(dto);
+        return ResponseEntity.ok(createdSupply);
     }
 }

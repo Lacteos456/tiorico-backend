@@ -24,13 +24,20 @@ public class ProductBoxSupply
     private Provider provider;
 
     @ManyToOne
-    @JoinColumn(name = "product_box_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonBackReference
-    private ProductBox productBox;
+    private Product product;
 
+    @Column(name = "box_quantity", nullable = false)
     private Integer boxQuantity;
+
+    @Column(name = "units_per_box", nullable = false)
+    private Integer unitsPerBox;
+
+    @Column(name = "box_price", nullable = false)
     private Double boxPrice;
 
+    @Column(name = "supply_date", nullable = false)
     private LocalDateTime supplyDate;
 
     @Column(name = "created_at", updatable = false)
@@ -46,6 +53,9 @@ public class ProductBoxSupply
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (supplyDate == null) {
+            supplyDate = LocalDateTime.now(); // Asigna la fecha actual si es null
+        }
     }
 
     @PreUpdate

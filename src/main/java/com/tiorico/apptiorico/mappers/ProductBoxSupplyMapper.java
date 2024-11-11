@@ -1,33 +1,49 @@
 package com.tiorico.apptiorico.mappers;
 
 import com.tiorico.apptiorico.dtos.ProductBoxSupplyDTO;
-import com.tiorico.apptiorico.models.ProductBox;
+import com.tiorico.apptiorico.models.Product;
 import com.tiorico.apptiorico.models.ProductBoxSupply;
 import com.tiorico.apptiorico.models.Provider;
+import com.tiorico.apptiorico.repositories.ProductRepository;
+import com.tiorico.apptiorico.repositories.ProviderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductBoxSupplyMapper
 {
+    @Autowired
+    private ProviderRepository providerRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     public ProductBoxSupplyDTO toDTO(ProductBoxSupply supply) {
-        return new ProductBoxSupplyDTO(
-                supply.getId(),
-                supply.getProvider().getId(),
-                supply.getProductBox().getId(),
-                supply.getBoxQuantity(),
-                supply.getBoxPrice(),
-                supply.getSupplyDate()
-        );
+        ProductBoxSupplyDTO dto = new ProductBoxSupplyDTO();
+        dto.setId(supply.getId());
+        dto.setProviderId(supply.getProvider().getId());
+        dto.setProductId(supply.getProduct().getId());
+        dto.setBoxQuantity(supply.getBoxQuantity());
+        dto.setUnitsPerBox(supply.getUnitsPerBox());
+        dto.setBoxPrice(supply.getBoxPrice());
+        dto.setSupplyDate(supply.getSupplyDate());
+        return dto;
     }
 
-    public ProductBoxSupply toEntity(ProductBoxSupplyDTO dto, Provider provider, ProductBox productBox) {
+    public ProductBoxSupply toEntity(ProductBoxSupplyDTO dto) {
         ProductBoxSupply supply = new ProductBoxSupply();
-        supply.setId(dto.getId());
-        supply.setProvider(provider);
-        supply.setProductBox(productBox);
         supply.setBoxQuantity(dto.getBoxQuantity());
+        supply.setUnitsPerBox(dto.getUnitsPerBox());
         supply.setBoxPrice(dto.getBoxPrice());
-        supply.setSupplyDate(dto.getSupplyDate());
+
+        Provider provider = providerRepository.findById(dto.getProviderId())
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+        supply.setProvider(provider);
+
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        supply.setProduct(product);
+
         return supply;
     }
 }
