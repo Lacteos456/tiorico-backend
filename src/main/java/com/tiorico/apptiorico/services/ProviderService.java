@@ -10,4 +10,5 @@ public interface ProviderService
     Provider findById(Integer id);
     List<Provider> findAll();
     void deleteById(Integer id);
+    Provider updateProvider(Provider provider);
 }

@@ -16,11 +16,6 @@ public class CategoryServiceImpl implements CategoryService
 
     @Override
     public List<Category> findAll() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    public List<Category> findActiveCategories() {
         return categoryRepository.findByIsActiveTrue();
     }
 

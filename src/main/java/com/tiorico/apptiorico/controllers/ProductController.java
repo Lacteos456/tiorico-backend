@@ -26,7 +26,7 @@ public class ProductController
 
     @GetMapping("/all")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<Product> products = productService.findActiveProducts();
+        List<Product> products = productService.findAll();
         List<ProductDTO> productDTOs = products.stream()
                 .map(productMapper::toDTO)
                 .toList();

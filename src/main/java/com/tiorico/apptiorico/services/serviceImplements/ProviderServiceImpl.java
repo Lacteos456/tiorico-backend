@@ -26,11 +26,16 @@ public class ProviderServiceImpl implements ProviderService
 
     @Override
     public List<Provider> findAll() {
-        return providerRepository.findAll();
+        return providerRepository.findByIsActiveTrue();
     }
 
     @Override
     public void deleteById(Integer id) {
         providerRepository.deleteById(id);
+    }
+
+    @Override
+    public Provider updateProvider(Provider provider) {
+        return providerRepository.save(provider);
     }
 }

@@ -2,6 +2,7 @@ package com.tiorico.apptiorico.controllers;
 
 import com.tiorico.apptiorico.dtos.ProviderDTO;
 import com.tiorico.apptiorico.mappers.ProviderMapper;
+import com.tiorico.apptiorico.models.Category;
 import com.tiorico.apptiorico.models.Provider;
 import com.tiorico.apptiorico.services.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,13 @@ public class ProviderController
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProvider(@PathVariable Integer id) {
-        providerService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        Provider provider = providerService.findById(id);
+        if (provider != null) {
+            provider.setIsActive(false); // Marcado como inactivo
+            providerService.updateProvider(provider);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

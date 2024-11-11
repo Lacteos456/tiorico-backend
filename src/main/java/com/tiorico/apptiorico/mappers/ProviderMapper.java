@@ -16,7 +16,7 @@ public class ProviderMapper
         provider.setId(dto.getId());
         provider.setName(dto.getName());
         provider.setContactInfo(dto.getContactInfo());
-        provider.setIsActive(dto.getIsActive());
+        provider.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
         provider.setCustomFields(dto.getCustomFields());
         return provider;
     }

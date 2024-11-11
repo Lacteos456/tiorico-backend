@@ -1,7 +1,6 @@
 package com.tiorico.apptiorico.services.serviceImplements;
 
 import com.tiorico.apptiorico.exceptions.UserException;
-import com.tiorico.apptiorico.models.Category;
 import com.tiorico.apptiorico.models.Product;
 import com.tiorico.apptiorico.services.ProductService;
 import com.tiorico.apptiorico.repositories.ProductRepository;
@@ -17,7 +16,7 @@ public class ProductServiceImpl implements ProductService
     private ProductRepository productRepository;
 
     @Override
-    public List<Product> findActiveProducts() {
+    public List<Product> findAll() {
         return productRepository.findByIsActiveTrue();
     }
 
