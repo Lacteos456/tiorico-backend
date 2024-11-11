@@ -1,8 +1,10 @@
 package com.tiorico.apptiorico.controllers;
 
 import com.tiorico.apptiorico.dtos.ProductDTO;
+import com.tiorico.apptiorico.dtos.ProviderDTO;
 import com.tiorico.apptiorico.mappers.ProductMapper;
 import com.tiorico.apptiorico.models.Product;
+import com.tiorico.apptiorico.models.Provider;
 import com.tiorico.apptiorico.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,15 @@ public class ProductController
                 .map(productMapper::toDTO)
                 .toList();
         return ResponseEntity.ok(productDTOs);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProviderById(@PathVariable Integer id) {
+        Product product = productService.findById(id);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(productMapper.toDTO(product));
     }
 
     @PostMapping("/")

@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductBoxSupplyServiceImpl implements ProductBoxSupplyService
 {
@@ -22,6 +24,11 @@ public class ProductBoxSupplyServiceImpl implements ProductBoxSupplyService
 
     @Autowired
     private ProductBoxSupplyMapper productBoxSupplyMapper;
+
+    @Override
+    public List<ProductBoxSupply> findAll() {
+        return productBoxSupplyRepository.findAll();
+    }
 
     @Override
     @Transactional

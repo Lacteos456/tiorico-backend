@@ -18,9 +18,21 @@ public class ProductBoxSupplyController
     @Autowired
     private ProductBoxSupplyService productBoxSupplyService;
 
+    @Autowired
+    private ProductBoxSupplyMapper productBoxSupplyMapper;
+
     @PostMapping
     public ResponseEntity<ProductBoxSupplyDTO> addProductBoxSupply(@RequestBody ProductBoxSupplyDTO dto) {
         ProductBoxSupplyDTO createdSupply = productBoxSupplyService.addProductBoxSupply(dto);
         return ResponseEntity.ok(createdSupply);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductBoxSupplyDTO>> getAllProducts() {
+        List<ProductBoxSupply> productBoxSupplies = productBoxSupplyService.findAll();
+        List<ProductBoxSupplyDTO> productBoxSupplyDTOs = productBoxSupplies.stream()
+                .map(productBoxSupplyMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(productBoxSupplyDTOs);
     }
 }
