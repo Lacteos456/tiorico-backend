@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -32,10 +33,22 @@ public class DailyAssignment
     private Product product;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(name = "assigned_quantity", columnDefinition = "int default 0")
     private Integer assignedQuantity;
+
+    @Column(name = "returned_boxes", columnDefinition = "int default 0")
+    private Integer returnedBoxes = 0;
+
+    @Column(name = "returned_units", columnDefinition = "int default 0")
+    private Integer returnedUnits = 0;
+
+    @Column(name = "total_sold_units", columnDefinition = "int default 0")
+    private Integer totalSoldUnits = 0;
+
+    @Column(name = "total_revenue", columnDefinition = "decimal(20,2) default 0.0")
+    private Double totalRevenue = 0.0;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -43,7 +56,7 @@ public class DailyAssignment
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "is_active", columnDefinition = "tinyint default 1")
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean isActive;
 
     @Lob
@@ -59,8 +72,5 @@ public class DailyAssignment
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
-    }
-
-    public void setProductId(Integer productId) {
     }
 }

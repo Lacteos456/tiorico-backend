@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,15 +24,22 @@ public class DailyAssignmentDTO
     private Integer productId;
 
     @NotNull(message = "La fecha no puede estar vacía")
-    private LocalDateTime date;
+    private LocalDate date;
 
     private Integer assignedQuantity;
+
+    private Integer returnedBoxes = 0;
+
+    private Integer returnedUnits = 0;
+
+    private Integer totalSoldUnits = 0;
+
+    private Double totalRevenue = 0.0;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isActive;
 
     @Size(max = 500, message = "Los campos personalizados no pueden exceder los 500 caracteres")

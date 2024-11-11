@@ -1,14 +1,15 @@
 package com.tiorico.apptiorico.services;
 
+import com.tiorico.apptiorico.dtos.DailyAssignmentDTO;
 import com.tiorico.apptiorico.models.DailyAssignment;
 
 import java.util.List;
 
 public interface DailyAssignmentService
 {
-    List<DailyAssignment> findAll();
-    DailyAssignment save(DailyAssignment assignment);
-    DailyAssignment findById(Integer id);
-    void delete(Integer id);
-    public DailyAssignment findByUserIdAndProductId(Integer userId, Integer productId);
+    DailyAssignmentDTO createDailyAssignment(DailyAssignmentDTO dto);
+    DailyAssignmentDTO getDailyAssignmentById(Integer id);
+    List<DailyAssignmentDTO> getAllDailyAssignments();
+    DailyAssignmentDTO updateDailyAssignment(Integer id, DailyAssignmentDTO dto);
+    void deleteDailyAssignment(Integer id);
 }
