@@ -9,4 +9,6 @@ public interface CategoryService
     List<Category> findAll();
     List<Category> findActiveCategories();
     Category save(Category category);
+    Category findById(Integer id);
+    Category updateCategory(Category category);
 }
