@@ -4,6 +4,7 @@ import com.tiorico.apptiorico.dtos.DailyAssignmentDTO;
 import com.tiorico.apptiorico.models.DailyAssignment;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DailyAssignmentService
 {
@@ -12,4 +13,5 @@ public interface DailyAssignmentService
     List<DailyAssignmentDTO> getAllDailyAssignments();
     DailyAssignmentDTO updateDailyAssignment(Integer id, DailyAssignmentDTO dto);
     void deleteDailyAssignment(Integer id);
+    Map<String, Integer> getProductStockAndUnitsPerBox(Integer productId);
 }

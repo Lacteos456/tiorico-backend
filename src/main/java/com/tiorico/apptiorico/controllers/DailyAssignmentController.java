@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/daily-assignments")
@@ -20,6 +21,12 @@ public class DailyAssignmentController
     public ResponseEntity<DailyAssignmentDTO> createDailyAssignment(@RequestBody DailyAssignmentDTO dto) {
         DailyAssignmentDTO createdAssignment = dailyAssignmentService.createDailyAssignment(dto);
         return ResponseEntity.ok(createdAssignment);
+    }
+
+    @GetMapping("/product-info/{productId}")
+    public ResponseEntity<Map<String, Integer>> getProductStockAndUnits(@PathVariable Integer productId) {
+        Map<String, Integer> productInfo = dailyAssignmentService.getProductStockAndUnitsPerBox(productId);
+        return ResponseEntity.ok(productInfo);
     }
 
     @GetMapping("/{id}")

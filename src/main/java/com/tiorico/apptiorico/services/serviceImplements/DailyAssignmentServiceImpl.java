@@ -13,7 +13,9 @@ import com.tiorico.apptiorico.services.DailyAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,6 +63,23 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         DailyAssignment assignment = dailyAssignmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Daily Assignment not found"));
         return dailyAssignmentMapper.toDTO(assignment);
+    }
+
+    @Override
+    public Map<String, Integer> getProductStockAndUnitsPerBox(Integer productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        int unitsPerBox = productBoxSupplyRepository.findUnitsPerBoxByProductId(productId);
+        int boxQuantity = productBoxSupplyRepository.findUnitsBoxQuantityByProductId(productId);
+        int countRegisters = productBoxSupplyRepository.findCountsByProductId(productId);
+        Map<String, Integer> result = new HashMap<>();
+        result.put("stock", product.getStock());
+        result.put("unitsPerBox", unitsPerBox);
+        result.put("boxQuantity", boxQuantity);
+        result.put("counts", countRegisters);
+
+        return result;
     }
 
     @Override
