@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.tiorico.apptiorico.dtos.UserUpdateDTO;
 import com.tiorico.apptiorico.models.User;
 import com.tiorico.apptiorico.services.UserService;
 import com.tiorico.apptiorico.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,17 +77,20 @@ public class UserController
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @Valid @RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @Valid @RequestBody UserUpdateDTO userDTO) throws Exception {
         User userToUpdate = new User();
         userToUpdate.setId(id);
         userToUpdate.setUsername(userDTO.getUsername());
-        userToUpdate.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            userToUpdate.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        }
         userToUpdate.setEmail(userDTO.getEmail());
         userToUpdate.setPhone(userDTO.getPhone());
 
         User updatedUser = userService.updateUser(userToUpdate);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
+
 
     @DeleteMapping
     public ResponseEntity<?> deleteUser(@RequestParam("id") Integer userId, @RequestParam("type") String type) throws Exception {
@@ -102,10 +108,15 @@ public class UserController
 
     @GetMapping("/normal")
     public ResponseEntity<List<UserDTO>> getNormalUsers() {
+        // Obtén el nombre de usuario del usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String authenticatedUsername = authentication.getName();
+
         List<User> normalUsers = userService.getNormalUsers();
 
-        // Convertir la lista de usuarios en una lista de UserDTO
+        // Filtrar y convertir a UserDTO excluyendo al usuario autenticado
         List<UserDTO> normalUsersDTO = normalUsers.stream()
+                .filter(user -> !user.getUsername().equals(authenticatedUsername)) // Excluir al usuario autenticado
                 .map(user -> UserDTO.builder()
                         .id(user.getId())
                         .username(user.getUsername())
@@ -120,10 +131,15 @@ public class UserController
 
     @GetMapping("/admin")
     public ResponseEntity<List<UserDTO>> getAdminUsers() {
+        // Obtén el nombre de usuario del usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String authenticatedUsername = authentication.getName();
+
         List<User> adminUsers = userService.getAdminUsers();
 
-        // Convertir la lista de usuarios en una lista de UserDTO
+        // Filtrar y convertir a UserDTO excluyendo al usuario autenticado
         List<UserDTO> adminUsersDTO = adminUsers.stream()
+                .filter(user -> !user.getUsername().equals(authenticatedUsername)) // Excluir al usuario autenticado
                 .map(user -> UserDTO.builder()
                         .id(user.getId())
                         .username(user.getUsername())
