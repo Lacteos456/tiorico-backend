@@ -70,9 +70,15 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        int unitsPerBox = productBoxSupplyRepository.findUnitsPerBoxByProductId(productId);
-        int boxQuantity = productBoxSupplyRepository.findUnitsBoxQuantityByProductId(productId);
+        // Recupera los valores como listas
+        List<Integer> unitsPerBoxList = productBoxSupplyRepository.findUnitsPerBoxByProductId(productId);
+        List<Integer> boxQuantityList = productBoxSupplyRepository.findUnitsBoxQuantityByProductId(productId);
         int countRegisters = productBoxSupplyRepository.findCountsByProductId(productId);
+
+        // Procesa las listas (por ejemplo, toma el primer valor o calcula un total si hay más de uno)
+        int unitsPerBox = unitsPerBoxList.isEmpty() ? 0 : unitsPerBoxList.get(0); // O suma si prefieres
+        int boxQuantity = boxQuantityList.isEmpty() ? 0 : boxQuantityList.get(0); // O suma si prefieres
+
         Map<String, Integer> result = new HashMap<>();
         result.put("stock", product.getStock());
         result.put("unitsPerBox", unitsPerBox);
@@ -98,7 +104,11 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         assignment.setReturnedBoxes(dto.getReturnedBoxes());
         assignment.setReturnedUnits(dto.getReturnedUnits());
 
-        int unitsPerBox = productBoxSupplyRepository.findUnitsPerBoxByProductId(dto.getProductId());
+        // Recupera los valores de unidades por caja como una lista
+        List<Integer> unitsPerBoxList = productBoxSupplyRepository.findUnitsPerBoxByProductId(dto.getProductId());
+
+        // Verifica que haya resultados y selecciona un valor adecuado
+        int unitsPerBox = unitsPerBoxList.isEmpty() ? 0 : unitsPerBoxList.get(0); // Puedes cambiar la lógica si es necesario
 
         // Calcula las unidades vendidas y el total recaudado
         int totalAssignedUnits = dto.getAssignedQuantity() * unitsPerBox;
