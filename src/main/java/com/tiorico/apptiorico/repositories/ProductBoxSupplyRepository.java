@@ -22,4 +22,11 @@ public interface ProductBoxSupplyRepository extends JpaRepository<ProductBoxSupp
 
     @Query("SELECT COUNT(pbs) FROM ProductBoxSupply pbs WHERE pbs.product.id = :productId AND pbs.isActive = true")
     Integer findCountsByProductId(@Param("productId") Integer productId);
+
+    @Query("SELECT pbs FROM ProductBoxSupply pbs WHERE pbs.provider.id = :providerId AND pbs.product.id = :productId AND pbs.unitsPerBox = :unitsPerBox")
+    ProductBoxSupply findByProviderAndProductAndUnitsPerBox(
+            @Param("providerId") Integer providerId,
+            @Param("productId") Integer productId,
+            @Param("unitsPerBox") Integer unitsPerBox
+    );
 }

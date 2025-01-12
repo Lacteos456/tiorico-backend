@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/daily-assignments")
@@ -23,21 +23,15 @@ public class DailyAssignmentController
         return ResponseEntity.ok(createdAssignment);
     }
 
-    @GetMapping("/product-info/{productId}")
-    public ResponseEntity<Map<String, Integer>> getProductStockAndUnits(@PathVariable Integer productId) {
-        Map<String, Integer> productInfo = dailyAssignmentService.getProductStockAndUnitsPerBox(productId);
-        return ResponseEntity.ok(productInfo);
+    @GetMapping("/{date}")
+    public ResponseEntity<List<DailyAssignmentDTO>> getAssignmentsByDate(@PathVariable LocalDate date) {
+        List<DailyAssignmentDTO> assignments = dailyAssignmentService.getAssignmentsByDate(date);
+        return ResponseEntity.ok(assignments);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DailyAssignmentDTO> getDailyAssignmentById(@PathVariable Integer id) {
-        DailyAssignmentDTO assignment = dailyAssignmentService.getDailyAssignmentById(id);
-        return ResponseEntity.ok(assignment);
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<List<DailyAssignmentDTO>> getAllDailyAssignments() {
-        List<DailyAssignmentDTO> assignments = dailyAssignmentService.getAllDailyAssignments();
+    @GetMapping
+    public ResponseEntity<List<DailyAssignmentDTO>> getAllAssignments() {
+        List<DailyAssignmentDTO> assignments = dailyAssignmentService.getAllAssignments();
         return ResponseEntity.ok(assignments);
     }
 

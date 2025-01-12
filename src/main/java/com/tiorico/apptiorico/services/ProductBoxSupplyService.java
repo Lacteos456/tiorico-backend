@@ -12,4 +12,5 @@ public interface ProductBoxSupplyService
     ProductBoxSupplyDTO addProductBoxSupply(ProductBoxSupplyDTO dto);
     ProductBoxSupply findById(Integer id);
     void updateProductBoxSupply(ProductBoxSupply productBoxSupply);
+    void deleteProductBoxSupply(ProductBoxSupply productBoxSupply);
 }

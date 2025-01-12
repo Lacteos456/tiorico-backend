@@ -2,42 +2,38 @@ package com.tiorico.apptiorico.mappers;
 
 import com.tiorico.apptiorico.dtos.DailyAssignmentDTO;
 import com.tiorico.apptiorico.models.DailyAssignment;
+import com.tiorico.apptiorico.models.Product;
+import com.tiorico.apptiorico.models.ProductBoxSupply;
+import com.tiorico.apptiorico.models.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DailyAssignmentMapper
-{
-    public DailyAssignment toEntity(DailyAssignmentDTO dto) {
-        DailyAssignment assignment = new DailyAssignment();
-        assignment.setId(dto.getId());
-        assignment.setDate(dto.getDate());
-        assignment.setAssignedQuantity(dto.getAssignedQuantity());
-        assignment.setReturnedBoxes(dto.getReturnedBoxes());
-        assignment.setReturnedUnits(dto.getReturnedUnits());
-        assignment.setTotalSoldUnits(dto.getTotalSoldUnits());
-        assignment.setTotalRevenue(dto.getTotalRevenue());
-        assignment.setCreatedAt(dto.getCreatedAt());
-        assignment.setUpdatedAt(dto.getUpdatedAt());
-        assignment.setIsActive(dto.getIsActive());
-        assignment.setCustomFields(dto.getCustomFields());
-        return assignment;
+public class DailyAssignmentMapper {
+    public DailyAssignmentDTO toDTO(DailyAssignment assignment) {
+        return new DailyAssignmentDTO(
+                assignment.getId(),
+                assignment.getUser().getId(),
+                assignment.getProduct().getId(),
+                assignment.getProductBoxSupply().getId(),
+                assignment.getAssignmentDate(),
+                assignment.getAssignedBoxes(),
+                assignment.getSoldUnits(),
+                assignment.getReturnedUnits(),
+                assignment.getTotalRevenue()
+        );
     }
 
-    public DailyAssignmentDTO toDTO(DailyAssignment assignment) {
-        DailyAssignmentDTO dto = new DailyAssignmentDTO();
-        dto.setId(assignment.getId());
-        dto.setUserId(assignment.getUser().getId());
-        dto.setProductId(assignment.getProduct().getId());
-        dto.setDate(assignment.getDate());
-        dto.setAssignedQuantity(assignment.getAssignedQuantity());
-        dto.setReturnedBoxes(assignment.getReturnedBoxes());
-        dto.setReturnedUnits(assignment.getReturnedUnits());
-        dto.setTotalSoldUnits(assignment.getTotalSoldUnits());
-        dto.setTotalRevenue(assignment.getTotalRevenue());
-        dto.setCreatedAt(assignment.getCreatedAt());
-        dto.setUpdatedAt(assignment.getUpdatedAt());
-        dto.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
-        dto.setCustomFields(assignment.getCustomFields());
-        return dto;
+    public DailyAssignment toEntity(DailyAssignmentDTO dto, User user, Product product, ProductBoxSupply productBoxSupply) {
+        return new DailyAssignment(
+                dto.getId(),
+                user,
+                product,
+                productBoxSupply,
+                dto.getAssignmentDate(),
+                dto.getAssignedBoxes() != null ? dto.getAssignedBoxes() : 0,
+                dto.getSoldUnits() != null ? dto.getSoldUnits() : 0,
+                dto.getReturnedUnits() != null ? dto.getReturnedUnits() : 0,
+                dto.getTotalRevenue() != null ? dto.getTotalRevenue() : 0.0
+        );
     }
 }

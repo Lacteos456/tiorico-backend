@@ -36,15 +36,28 @@ public class ProductBoxSupplyController
         return ResponseEntity.ok(productBoxSupplyDTOs);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductBoxSupply(@PathVariable Integer id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductBoxSupplyDTO> getProductBoxSupplyById(@PathVariable Integer id) {
         ProductBoxSupply productBoxSupply = productBoxSupplyService.findById(id);
         if (productBoxSupply != null) {
-            productBoxSupply.setIsActive(false);
-            productBoxSupplyService.updateProductBoxSupply(productBoxSupply);
-            return ResponseEntity.noContent().build();
+            ProductBoxSupplyDTO productBoxSupplyDTO = productBoxSupplyMapper.toDTO(productBoxSupply);
+            return ResponseEntity.ok(productBoxSupplyDTO);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductBoxSupply(@PathVariable Integer id) {
+        // Buscar el suministro por ID
+        ProductBoxSupply productBoxSupply = productBoxSupplyService.findById(id);
+
+        if (productBoxSupply != null) {
+            // Llamar al servicio para eliminar el suministro y restaurar el stock
+            productBoxSupplyService.deleteProductBoxSupply(productBoxSupply);
+            return ResponseEntity.noContent().build(); // Responder con éxito (204)
+        } else {
+            return ResponseEntity.notFound().build(); // Responder con 404 si no se encuentra el suministro
         }
     }
 }

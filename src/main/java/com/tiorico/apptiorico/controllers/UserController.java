@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.tiorico.apptiorico.dtos.ProviderDTO;
 import com.tiorico.apptiorico.dtos.UserUpdateDTO;
+import com.tiorico.apptiorico.models.Provider;
 import com.tiorico.apptiorico.models.User;
 import com.tiorico.apptiorico.services.UserService;
 import com.tiorico.apptiorico.dtos.UserDTO;
@@ -68,6 +70,26 @@ public class UserController
         // Crear usuario
         User createdUser = userService.createUser(user, userRoles);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
+        // Buscar el usuario por ID
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // Convertir el usuario a UserDTO
+        UserDTO userDTO = UserDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .isActive(user.getIsActive())
+                .build();
+
+        return ResponseEntity.ok(userDTO);
     }
 
     @GetMapping("/{username}")
