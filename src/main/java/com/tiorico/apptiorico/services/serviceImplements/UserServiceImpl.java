@@ -143,6 +143,17 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public User getUserByResetToken(String resetToken) {
+        // Manejar el Optional<User>
+        return userRepository.findByResetToken(resetToken)
+                .orElseThrow(() -> new RuntimeException("User with reset token not found"));
+    }
+
+    @Override
     public User getUserById(Integer userId) throws UserException.UserNotFoundException {
         return userRepository.findById(userId).orElse(null);
     }

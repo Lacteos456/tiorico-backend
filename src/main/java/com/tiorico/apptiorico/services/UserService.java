@@ -1,8 +1,10 @@
 package com.tiorico.apptiorico.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import com.tiorico.apptiorico.exceptions.UserException;
 import com.tiorico.apptiorico.models.User;
 import com.tiorico.apptiorico.models.UserRol;
 
@@ -31,4 +33,8 @@ public interface UserService
 	public List<User> getNormalUsers();
 
 	public List<User> getAdminUsers();
+
+	User getUserByEmail(String email) throws UserException.UserNotFoundException;
+
+	public User getUserByResetToken(String resetToken);
 }
