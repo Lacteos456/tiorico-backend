@@ -17,6 +17,10 @@ public class DailyAssignmentDTO {
     private LocalDate assignmentDate;
     private Integer assignedBoxes;
     private Integer soldUnits;
+    private Integer soldBoxes;
     private Integer returnedUnits;
+    private Integer returnedBoxes;
+    private Integer remainingUnits;
     private Double totalRevenue;
+    private Boolean isActive;
 }

@@ -29,6 +29,12 @@ public class DailyAssignmentController
         return ResponseEntity.ok(assignments);
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<DailyAssignmentDTO> getDailyAssignmentById(@PathVariable Integer id) {
+        DailyAssignmentDTO assignment = dailyAssignmentService.getDailyAssignmentById(id);
+        return ResponseEntity.ok(assignment);
+    }
+
     @GetMapping
     public ResponseEntity<List<DailyAssignmentDTO>> getAllAssignments() {
         List<DailyAssignmentDTO> assignments = dailyAssignmentService.getAllAssignments();

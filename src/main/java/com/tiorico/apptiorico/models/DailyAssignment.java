@@ -38,11 +38,23 @@ public class DailyAssignment {
     @Column(name = "sold_units", nullable = false)
     private Integer soldUnits = 0;
 
+    @Column(name = "sold_boxes", nullable = false)
+    private Integer soldBoxes = 0;
+
     @Column(name = "returned_units", nullable = false)
     private Integer returnedUnits = 0;
 
+    @Column(name = "returned_boxes", nullable = false)
+    private Integer returnedBoxes = 0;
+
+    @Column(name = "remaining_units", nullable = false)
+    private Integer remainingUnits = 0;
+
     @Column(name = "total_revenue", nullable = false, columnDefinition = "decimal(20,2) default 0.0")
     private Double totalRevenue = 0.0;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
     @PostPersist
     public void calculateRevenue() {

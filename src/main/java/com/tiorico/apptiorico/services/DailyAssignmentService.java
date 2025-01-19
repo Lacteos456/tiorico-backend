@@ -14,4 +14,5 @@ public interface DailyAssignmentService
     List<DailyAssignmentDTO> getAssignmentsByDate(LocalDate date);
     DailyAssignmentDTO updateDailyAssignment(Integer id, DailyAssignmentDTO dto);
     void deleteDailyAssignment(Integer id);
+    public DailyAssignmentDTO getDailyAssignmentById(Integer id);
 }

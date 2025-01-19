@@ -18,8 +18,12 @@ public class DailyAssignmentMapper {
                 assignment.getAssignmentDate(),
                 assignment.getAssignedBoxes(),
                 assignment.getSoldUnits(),
+                assignment.getSoldBoxes(),
                 assignment.getReturnedUnits(),
-                assignment.getTotalRevenue()
+                assignment.getReturnedBoxes(),
+                assignment.getRemainingUnits(),
+                assignment.getTotalRevenue(),
+                assignment.getIsActive()
         );
     }
 
@@ -32,8 +36,12 @@ public class DailyAssignmentMapper {
                 dto.getAssignmentDate(),
                 dto.getAssignedBoxes() != null ? dto.getAssignedBoxes() : 0,
                 dto.getSoldUnits() != null ? dto.getSoldUnits() : 0,
+                dto.getSoldBoxes() != null ? dto.getSoldBoxes() : 0,
                 dto.getReturnedUnits() != null ? dto.getReturnedUnits() : 0,
-                dto.getTotalRevenue() != null ? dto.getTotalRevenue() : 0.0
+                dto.getReturnedBoxes() != null ? dto.getReturnedBoxes() : 0,
+                dto.getRemainingUnits() != null ? dto.getRemainingUnits() : 0,
+                dto.getTotalRevenue() != null ? dto.getTotalRevenue() : 0.0,
+                dto.getIsActive() != null ? dto.getIsActive() : true
         );
     }
 }

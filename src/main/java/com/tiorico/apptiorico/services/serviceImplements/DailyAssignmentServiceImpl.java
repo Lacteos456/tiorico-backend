@@ -83,6 +83,13 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
     }
 
     @Override
+    public DailyAssignmentDTO getDailyAssignmentById(Integer id) {
+        DailyAssignment assignment = dailyAssignmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Asignación no encontrada"));
+        return dailyAssignmentMapper.toDTO(assignment);
+    }
+
+    @Override
     public List<DailyAssignmentDTO> getAssignmentsByDate(LocalDate date) {
         return dailyAssignmentRepository.findByAssignmentDate(date)
                 .stream()
@@ -97,22 +104,20 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
 
         // Actualizar valores desde el DTO
         assignment.setReturnedUnits(dto.getReturnedUnits());
+        assignment.setReturnedBoxes(dto.getReturnedBoxes());
 
         // Calcular total de unidades asignadas
         int totalAssignedUnits = assignment.getAssignedBoxes() * assignment.getProductBoxSupply().getUnitsPerBox();
 
         // Calcular unidades vendidas
         int totalSoldUnits = totalAssignedUnits - assignment.getReturnedUnits();
-        if(totalSoldUnits == 0){
-            totalSoldUnits = totalAssignedUnits;
-            int returnedUnitsTotal = 0;
-            assignment.setReturnedUnits(returnedUnitsTotal);
-        }
-
         assignment.setSoldUnits(totalSoldUnits);
 
-        // Calcular ingreso total
+        // Calcular cajas vendidas y actualizar soldBoxes
         int soldBoxes = totalSoldUnits / assignment.getProductBoxSupply().getUnitsPerBox();
+        assignment.setSoldBoxes(soldBoxes);
+
+        // Calcular ingreso total
         double boxPrice = assignment.getProductBoxSupply().getBoxPrice();
         assignment.setTotalRevenue(soldBoxes * boxPrice);
 

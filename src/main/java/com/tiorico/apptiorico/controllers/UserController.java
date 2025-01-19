@@ -130,15 +130,10 @@ public class UserController
 
     @GetMapping("/normal")
     public ResponseEntity<List<UserDTO>> getNormalUsers() {
-        // Obtén el nombre de usuario del usuario autenticado
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String authenticatedUsername = authentication.getName();
-
         List<User> normalUsers = userService.getNormalUsers();
 
-        // Filtrar y convertir a UserDTO excluyendo al usuario autenticado
+        // Convertir a UserDTO sin excluir al usuario autenticado
         List<UserDTO> normalUsersDTO = normalUsers.stream()
-                .filter(user -> !user.getUsername().equals(authenticatedUsername)) // Excluir al usuario autenticado
                 .map(user -> UserDTO.builder()
                         .id(user.getId())
                         .username(user.getUsername())
