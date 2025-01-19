@@ -1,13 +1,11 @@
 package com.tiorico.apptiorico.controllers;
 
-import com.tiorico.apptiorico.models.DashboardData;
+import com.tiorico.apptiorico.models.AdminDashboardData;
+import com.tiorico.apptiorico.models.SellerDashboardData;
 import com.tiorico.apptiorico.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/dashboard")
@@ -22,8 +20,14 @@ public class DashboardController
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<DashboardData> getDashboardData() {
-        DashboardData dashboardData = dashboardService.getDashboardData();
+    public ResponseEntity<AdminDashboardData> getDashboardData() {
+        AdminDashboardData dashboardData = dashboardService.getDashboardData();
+        return ResponseEntity.ok(dashboardData);
+    }
+
+    @GetMapping("/seller/{sellerId}")
+    public ResponseEntity<SellerDashboardData> getSellerDashboardData(@PathVariable Integer sellerId) {
+        SellerDashboardData dashboardData = dashboardService.getSellerDashboardData(sellerId);
         return ResponseEntity.ok(dashboardData);
     }
 }

@@ -11,4 +11,5 @@ import java.util.List;
 public interface DailyAssignmentRepository extends JpaRepository<DailyAssignment, Integer>
 {
     List<DailyAssignment> findByAssignmentDate(LocalDate date);
+    long countByUserId(long userId);
 }
