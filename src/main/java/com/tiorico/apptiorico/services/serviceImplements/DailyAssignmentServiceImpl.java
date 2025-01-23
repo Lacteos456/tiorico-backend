@@ -99,6 +99,7 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
 
     @Override
     public DailyAssignmentDTO updateDailyAssignment(Integer id, DailyAssignmentDTO dto) {
+        // Buscar la asignación diaria
         DailyAssignment assignment = dailyAssignmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Asignación no encontrada"));
 
@@ -106,44 +107,40 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         ProductBoxSupply productBoxSupply = assignment.getProductBoxSupply();
         Product product = productBoxSupply.getProduct();
 
-        // Actualizar `product_box_supplies` si los valores no son 0
+        // Actualizar las cajas devueltas
         if (dto.getReturnedBoxes() > 0) {
-            int updatedBoxQuantity = productBoxSupply.getBoxQuantity() + dto.getReturnedBoxes();
-            productBoxSupply.setBoxQuantity(updatedBoxQuantity);
+            productBoxSupply.setBoxQuantity(productBoxSupply.getBoxQuantity() + dto.getReturnedBoxes());
         }
 
+        // Actualizar el stock del producto
         if (dto.getReturnedUnits() > 0) {
-            int updatedUnitsPerBox = productBoxSupply.getUnitsPerBox() + dto.getReturnedUnits();
-            productBoxSupply.setUnitsPerBox(updatedUnitsPerBox);
+            product.setStock(product.getStock() + dto.getReturnedUnits());
         }
 
-        // Actualizar el stock del producto si las unidades devueltas no son 0
-        if (dto.getReturnedUnits() > 0) {
-            int updatedStock = product.getStock() + dto.getReturnedUnits();
-            product.setStock(updatedStock);
-        }
-
-        // Actualizar valores desde el DTO
+        // Actualizar valores en la asignación
         assignment.setReturnedUnits(dto.getReturnedUnits());
         assignment.setReturnedBoxes(dto.getReturnedBoxes());
 
-        // Calcular total de unidades asignadas
-        int totalAssignedUnits = assignment.getAssignedBoxes() * assignment.getProductBoxSupply().getUnitsPerBox();
+        // Calcular las unidades totales asignadas originalmente
+        int totalAssignedUnits = assignment.getAssignedBoxes() * productBoxSupply.getUnitsPerBox();
 
-        // Calcular unidades vendidas
-        int totalSoldUnits = totalAssignedUnits - assignment.getReturnedUnits();
+        // Calcular las unidades vendidas
+        int totalSoldUnits = totalAssignedUnits - dto.getReturnedUnits();
         assignment.setSoldUnits(totalSoldUnits);
 
-        // Calcular cajas vendidas y actualizar soldBoxes
-        int soldBoxes = totalSoldUnits / assignment.getProductBoxSupply().getUnitsPerBox();
+        // Calcular las cajas vendidas
+        int soldBoxes = totalSoldUnits / productBoxSupply.getUnitsPerBox();
         assignment.setSoldBoxes(soldBoxes);
 
         // Calcular ingreso total
-        double boxPrice = assignment.getProductBoxSupply().getBoxPrice();
+        double boxPrice = productBoxSupply.getBoxPrice();
         assignment.setTotalRevenue(soldBoxes * boxPrice);
 
-        // Guardar en base de datos
+        // Guardar actualizaciones
+        productRepository.save(product);
+        productBoxSupplyRepository.save(productBoxSupply);
         dailyAssignmentRepository.save(assignment);
+
         return dailyAssignmentMapper.toDTO(assignment);
     }
 
@@ -153,20 +150,42 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         DailyAssignment assignment = dailyAssignmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Asignación no encontrada"));
 
-        // Obtener el producto
+        // Obtener el producto relacionado
         Product product = assignment.getProduct();
 
-        // Obtener el suministro del producto
+        // Obtener el suministro del producto relacionado
         ProductBoxSupply productBoxSupply = assignment.getProductBoxSupply();
 
-        // Calcular las unidades asignadas
-        int totalUnitsAssigned = assignment.getAssignedBoxes() * productBoxSupply.getUnitsPerBox();
+        // Calcular las unidades y cajas devueltas
+        int returnedUnits = assignment.getReturnedUnits() != null ? assignment.getReturnedUnits() : 0;
+        int returnedBoxes = assignment.getReturnedBoxes() != null ? assignment.getReturnedBoxes() : 0;
+
+        // Calcular las unidades y cajas asignadas originalmente
+        int assignedUnits = assignment.getAssignedBoxes() * productBoxSupply.getUnitsPerBox();
+        int assignedBoxes = assignment.getAssignedBoxes();
+
+        // Si todo lo retornado coincide con lo asignado, no hacer ajustes en el inventario
+        if (returnedUnits == assignedUnits && returnedBoxes == assignedBoxes) {
+            // Solo eliminar la asignación diaria
+            dailyAssignmentRepository.delete(assignment);
+            return;
+        }
+
+        // Calcular las unidades y cajas vendidas
+        int soldUnits = assignment.getSoldUnits() != null ? assignment.getSoldUnits() : 0; // Usar 0 si `sold_units` es nulo
+        int soldBoxes = assignment.getSoldBoxes() != null ? assignment.getSoldBoxes() : 0; // Usar 0 si `sold_boxes` es nulo
+
+        // Si no hay soldUnits ni soldBoxes, usar assignedBoxes como respaldo
+        if (soldUnits == 0 && soldBoxes == 0) {
+            soldUnits = assignedUnits - returnedUnits;
+            soldBoxes = assignedBoxes - returnedBoxes;
+        }
+
+        // Restaurar el inventario en ProductBoxSupply
+        productBoxSupply.setBoxQuantity(productBoxSupply.getBoxQuantity() + soldBoxes);
 
         // Restaurar el stock del producto
-        product.setStock(product.getStock() + totalUnitsAssigned);
-
-        // Restaurar las cajas en el suministro de producto
-        productBoxSupply.setBoxQuantity(productBoxSupply.getBoxQuantity() + assignment.getAssignedBoxes());
+        product.setStock(product.getStock() + soldUnits);
 
         // Guardar las actualizaciones en la base de datos
         productRepository.save(product);
