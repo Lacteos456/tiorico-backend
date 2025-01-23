@@ -35,6 +35,9 @@ public class DailyAssignment {
     @Column(name = "assigned_boxes", nullable = false)
     private Integer assignedBoxes;
 
+    @Column(name = "total_boxes", nullable = false)
+    private Integer totalBoxes;
+
     @Column(name = "sold_units", nullable = false)
     private Integer soldUnits = 0;
 
