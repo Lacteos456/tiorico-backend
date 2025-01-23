@@ -59,7 +59,7 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
 
         // Validar que haya suficiente stock en el producto
         if (product.getStock() < totalUnitsAssigned) {
-            throw new RuntimeException("El stock disponible (" + product.getStock() + ") es menor que las unidades requeridas (" + totalUnitsAssigned + ").");
+            throw new RuntimeException("La cantidad disponible (" + product.getStock() + ") es menor que las unidades requeridas (" + totalUnitsAssigned + ").");
         }
 
         // Validar que haya suficientes cajas en el suministro

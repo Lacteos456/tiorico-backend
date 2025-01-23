@@ -23,7 +23,7 @@ public class SaleDetailsServiceImpl implements SaleDetailsService {
     @Override
     public SaleDetailsDTO getSaleDetailsById(Integer id) {
         return saleDetailsMapper.toDTO(saleDetailsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sale detail not found")));
+                .orElseThrow(() -> new RuntimeException("Detalle de venta no encontrado")));
     }
 
     @Override

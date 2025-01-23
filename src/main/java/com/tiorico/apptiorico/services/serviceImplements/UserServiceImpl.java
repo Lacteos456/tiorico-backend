@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService
     public User getUserByResetToken(String resetToken) {
         // Manejar el Optional<User>
         return userRepository.findByResetToken(resetToken)
-                .orElseThrow(() -> new RuntimeException("User with reset token not found"));
+                .orElseThrow(() -> new RuntimeException("Usuario con token de reestablecimiento no encontrado"));
     }
 
     @Override

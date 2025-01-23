@@ -74,7 +74,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public SaleDTO getSaleById(Integer id) {
         Sale sale = saleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sale not found"));
+                .orElseThrow(() -> new RuntimeException("Venta no encontrada"));
         return saleMapper.toDTO(sale);
     }
 
