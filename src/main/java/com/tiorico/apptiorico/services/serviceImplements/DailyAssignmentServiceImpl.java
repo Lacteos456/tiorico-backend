@@ -102,6 +102,27 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         DailyAssignment assignment = dailyAssignmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Asignación no encontrada"));
 
+        // Obtener datos relacionados
+        ProductBoxSupply productBoxSupply = assignment.getProductBoxSupply();
+        Product product = productBoxSupply.getProduct();
+
+        // Actualizar `product_box_supplies` si los valores no son 0
+        if (dto.getReturnedBoxes() > 0) {
+            int updatedBoxQuantity = productBoxSupply.getBoxQuantity() + dto.getReturnedBoxes();
+            productBoxSupply.setBoxQuantity(updatedBoxQuantity);
+        }
+
+        if (dto.getReturnedUnits() > 0) {
+            int updatedUnitsPerBox = productBoxSupply.getUnitsPerBox() + dto.getReturnedUnits();
+            productBoxSupply.setUnitsPerBox(updatedUnitsPerBox);
+        }
+
+        // Actualizar el stock del producto si las unidades devueltas no son 0
+        if (dto.getReturnedUnits() > 0) {
+            int updatedStock = product.getStock() + dto.getReturnedUnits();
+            product.setStock(updatedStock);
+        }
+
         // Actualizar valores desde el DTO
         assignment.setReturnedUnits(dto.getReturnedUnits());
         assignment.setReturnedBoxes(dto.getReturnedBoxes());
