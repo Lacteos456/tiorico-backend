@@ -36,9 +36,6 @@ public class Sale {
     @Column(name = "total_price", nullable = false, columnDefinition = "decimal(20,2) default 0.0")
     private Double totalPrice;
 
-    @Column(name = "total_box_quantity", nullable = false, columnDefinition = "int default 0")
-    private Integer totalBoxQuantity;
-
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleDetails> saleDetails = new ArrayList<>();
 

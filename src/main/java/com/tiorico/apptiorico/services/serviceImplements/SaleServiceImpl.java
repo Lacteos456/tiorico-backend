@@ -89,15 +89,9 @@ public class SaleServiceImpl implements SaleService {
 
         double totalPriceWithIva = totalPriceWithoutIva * 1.19; // Aplicar IVA del 19%
 
-        // Calcular la cantidad total de cajas vendidas
-        int totalBoxQuantity = saleDetails.stream()
-                .mapToInt(SaleDetails::getBoxQuantitySold)
-                .sum();
-
         // Asignar precios a la venta
         sale.setPrice(totalPriceWithoutIva); // Total sin IVA
         sale.setTotalPrice(totalPriceWithIva); // Total con IVA
-        sale.setTotalBoxQuantity(totalBoxQuantity); // Total de cajas vendidas
 
         // Guardar la venta y devolver el DTO
         return saleMapper.toDTO(saleRepository.save(sale));

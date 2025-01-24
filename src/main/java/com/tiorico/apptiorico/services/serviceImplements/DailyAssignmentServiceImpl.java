@@ -212,11 +212,6 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         productRepository.save(product);
         productBoxSupplyRepository.save(productBoxSupply);
 
-        // Validar que existan ventas asociadas antes de eliminar
-        if (assignment.getSales() != null && !assignment.getSales().isEmpty()) {
-            assignment.getSales().clear();
-        }
-
         // Eliminar la asignación diaria
         dailyAssignmentRepository.delete(assignment);
     }
