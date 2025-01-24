@@ -64,13 +64,13 @@ public class SaleServiceImpl implements SaleService {
                             .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
                     // Validar si hay inventario suficiente en la asignación diaria
-                    if (dailyAssignment.getTotalBoxes() < detailDTO.getBoxQuantitySold()) {
+                    if (dailyAssignment.getSellerBoxes() < detailDTO.getBoxQuantitySold()) {
                         throw new RuntimeException("Inventario insuficiente para la asignación diaria del producto");
                     }
 
                     // Actualizar inventario en la asignación diaria
-                    dailyAssignment.setTotalBoxes(dailyAssignment.getTotalBoxes() - detailDTO.getBoxQuantitySold());
-                    dailyAssignment.setTotalUnits(dailyAssignment.getTotalUnits() - (detailDTO.getBoxQuantitySold() * unitsPerBox));
+                    dailyAssignment.setSellerBoxes(dailyAssignment.getSellerBoxes() - detailDTO.getBoxQuantitySold());
+                    dailyAssignment.setSellerUnits(dailyAssignment.getSellerUnits() - (detailDTO.getBoxQuantitySold() * unitsPerBox));
                     dailyAssignmentRepository.save(dailyAssignment);
 
                     // Convertir el DTO del detalle de venta a la entidad SaleDetails
@@ -114,8 +114,8 @@ public class SaleServiceImpl implements SaleService {
             ProductBoxSupply productBoxSupply = dailyAssignment.getProductBoxSupply();
             int unitsPerBox = productBoxSupply.getUnitsPerBox();
 
-            dailyAssignment.setTotalBoxes(dailyAssignment.getTotalBoxes() + saleDetail.getBoxQuantitySold());
-            dailyAssignment.setTotalUnits(dailyAssignment.getTotalUnits() + (saleDetail.getBoxQuantitySold() * unitsPerBox));
+            dailyAssignment.setSellerBoxes(dailyAssignment.getSellerBoxes() + saleDetail.getBoxQuantitySold());
+            dailyAssignment.setSellerUnits(dailyAssignment.getSellerUnits() + (saleDetail.getBoxQuantitySold() * unitsPerBox));
             dailyAssignmentRepository.save(dailyAssignment);
         });
 

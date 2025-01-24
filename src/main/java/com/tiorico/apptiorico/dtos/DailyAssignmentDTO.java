@@ -19,6 +19,8 @@ public class DailyAssignmentDTO {
     private Integer assignedUnits;
     private Integer totalBoxes;
     private Integer totalUnits;
+    private Integer sellerBoxes;
+    private Integer sellerUnits;
     private Integer soldUnits;
     private Integer soldBoxes;
     private Integer returnedUnits = 0;

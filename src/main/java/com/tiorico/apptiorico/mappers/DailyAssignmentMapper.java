@@ -22,6 +22,8 @@ public class DailyAssignmentMapper {
                 assignment.getAssignedUnits(),
                 assignment.getTotalBoxes(),
                 assignment.getTotalUnits(),
+                assignment.getSellerBoxes(),
+                assignment.getSellerUnits(),
                 assignment.getSoldUnits(),
                 assignment.getSoldBoxes(),
                 assignment.getReturnedUnits(),
@@ -44,6 +46,8 @@ public class DailyAssignmentMapper {
                 dto.getAssignedUnits() != null ? dto.getAssignedUnits() : 0,
                 dto.getTotalBoxes() != null ? dto.getTotalBoxes() : 0, // totalBoxes igual a assignedBoxes
                 dto.getTotalUnits() != null ? dto.getTotalUnits() : 0,
+                dto.getSellerBoxes() != null ? dto.getSellerBoxes() : 0,
+                dto.getSellerUnits() != null ? dto.getSellerUnits() : 0,
                 dto.getSoldUnits() != null ? dto.getSoldUnits() : 0,
                 dto.getSoldBoxes() != null ? dto.getSoldBoxes() : 0,
                 dto.getReturnedUnits() != null ? dto.getReturnedUnits() : 0,
