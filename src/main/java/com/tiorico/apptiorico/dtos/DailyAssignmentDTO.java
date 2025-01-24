@@ -21,9 +21,9 @@ public class DailyAssignmentDTO {
     private Integer totalUnits;
     private Integer soldUnits;
     private Integer soldBoxes;
-    private Integer returnedUnits;
+    private Integer returnedUnits = 0;
     private Boolean isUsed;
-    private Integer returnedBoxes;
+    private Integer returnedBoxes = 0;
     private Integer remainingUnits;
     private Double totalRevenue;
     private Boolean isActive;

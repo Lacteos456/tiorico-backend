@@ -50,13 +50,13 @@ public class DailyAssignment {
     @Column(name = "sold_boxes", nullable = false)
     private Integer soldBoxes = 0;
 
-    @Column(name = "returned_units", nullable = false)
+    @Column(name = "returned_units", nullable = false, columnDefinition = "int default 0")
     private Integer returnedUnits = 0;
 
     @Column(name = "is_used", nullable = false)
     private Boolean isUsed = true;
 
-    @Column(name = "returned_boxes", nullable = false)
+    @Column(name = "returned_boxes", nullable = false, columnDefinition = "int default 0")
     private Integer returnedBoxes = 0;
 
     @Column(name = "remaining_units", nullable = false)

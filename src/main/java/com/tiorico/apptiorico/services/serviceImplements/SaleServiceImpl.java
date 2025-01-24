@@ -40,6 +40,7 @@ public class SaleServiceImpl implements SaleService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public SaleDTO createSale(SaleDTO saleDTO) {
         // Obtener el usuario desde el repositorio
         User user = userRepository.findById(saleDTO.getUserId())
@@ -65,7 +66,19 @@ public class SaleServiceImpl implements SaleService {
                     return saleDetail;
                 }).collect(Collectors.toList());
 
-        sale.setSaleDetails(saleDetails); // Asignar los detalles de la venta
+        // Asignar los detalles a la venta
+        sale.setSaleDetails(saleDetails);
+
+        // Calcular el total sin IVA y el total con IVA
+        double totalPriceWithoutIva = saleDetails.stream()
+                .mapToDouble(detail -> detail.getBoxQuantitySold() * detail.getUnitPrice())
+                .sum();
+
+        double totalPriceWithIva = totalPriceWithoutIva * 1.19; // Aplicar IVA del 19%
+
+        // Asignar precios a la venta
+        sale.setPrice(totalPriceWithoutIva); // Total sin IVA
+        sale.setTotalPrice(totalPriceWithIva); // Total con IVA
 
         // Guardar la venta y devolver el DTO
         return saleMapper.toDTO(saleRepository.save(sale));
