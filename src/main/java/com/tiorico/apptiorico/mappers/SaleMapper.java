@@ -26,6 +26,7 @@ public class SaleMapper {
                 )
                 .saleDate(sale.getSaleDate())
                 .totalPrice(sale.getTotalPrice())
+                .totalBoxQuantity(sale.getTotalBoxQuantity())
                 .price(sale.getPrice())
                 .isActive(sale.getIsActive())
                 .saleDetails(
@@ -46,6 +47,7 @@ public class SaleMapper {
         sale.setSaleDate(dto.getSaleDate());
         sale.setTotalPrice(dto.getTotalPrice());
         sale.setPrice(dto.getPrice());
+        sale.setTotalBoxQuantity(dto.getTotalBoxQuantity());
         sale.setIsActive(dto.getIsActive());
         return sale;
     }

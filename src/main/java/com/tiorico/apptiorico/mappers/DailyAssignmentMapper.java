@@ -7,6 +7,8 @@ import com.tiorico.apptiorico.models.ProductBoxSupply;
 import com.tiorico.apptiorico.models.User;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class DailyAssignmentMapper {
     public DailyAssignmentDTO toDTO(DailyAssignment assignment) {
@@ -49,7 +51,8 @@ public class DailyAssignmentMapper {
                 dto.getReturnedBoxes() != null ? dto.getReturnedBoxes() : 0,
                 dto.getRemainingUnits() != null ? dto.getRemainingUnits() : 0,
                 dto.getTotalRevenue() != null ? dto.getTotalRevenue() : 0.0,
-                dto.getIsActive() != null ? dto.getIsActive() : true
+                dto.getIsActive() != null ? dto.getIsActive() : true,
+                new ArrayList<>()
         );
     }
 }

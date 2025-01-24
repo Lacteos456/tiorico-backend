@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -67,6 +69,9 @@ public class DailyAssignment {
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
+
+    @OneToMany(mappedBy = "dailyAssignment", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Sale> sales = new ArrayList<>();
 
     @PostPersist
     public void calculateRevenue() {
