@@ -19,6 +19,7 @@ public class SaleDTO {
     private LocalDate saleDate;
     private Double totalPrice;
     private Double price;
+    private Integer totalBoxQuantity;
     private Boolean isActive;
     private List<SaleDetailsDTO> saleDetails;
 }
