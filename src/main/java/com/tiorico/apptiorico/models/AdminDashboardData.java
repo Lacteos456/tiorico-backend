@@ -12,4 +12,5 @@ public class AdminDashboardData
     private long totalUsers;
     private long totalProducts;
     private long totalCategories;
+    private double totalRevenue;
 }

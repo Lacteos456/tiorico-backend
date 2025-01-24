@@ -30,8 +30,14 @@ public class DashboardServiceImpl implements DashboardService
         long totalUsers = userRepository.count(); // Contar usuarios
         long totalProducts = productRepository.count(); // Contar productos
         long totalCategories = categoryRepository.count(); // Contar categorias
+        Double totalRevenue = saleRepository.calculateTotalRevenue(); // Contar ventas
 
-        return new AdminDashboardData(totalUsers, totalProducts, totalCategories);
+        return new AdminDashboardData(
+                totalUsers,
+                totalProducts,
+                totalCategories,
+                totalRevenue != null ? totalRevenue : 0D
+        );
     }
 
     @Override

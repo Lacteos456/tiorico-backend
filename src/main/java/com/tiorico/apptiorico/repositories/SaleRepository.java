@@ -16,4 +16,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer>
 
     @Query("SELECT SUM(s.totalPrice) FROM Sale s WHERE s.user.id = :userId")
     Double sumRevenueByUserId(@Param("userId") long userId);
+
+    @Query("SELECT COALESCE(SUM(s.totalPrice), 0) FROM Sale s")
+    Double calculateTotalRevenue();
 }
