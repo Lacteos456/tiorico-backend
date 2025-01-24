@@ -53,6 +53,9 @@ public class DailyAssignment {
     @Column(name = "returned_units", nullable = false)
     private Integer returnedUnits = 0;
 
+    @Column(name = "is_used", nullable = false)
+    private Boolean isUsed = true;
+
     @Column(name = "returned_boxes", nullable = false)
     private Integer returnedBoxes = 0;
 

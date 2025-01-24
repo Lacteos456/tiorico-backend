@@ -107,34 +107,55 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         ProductBoxSupply productBoxSupply = assignment.getProductBoxSupply();
         Product product = productBoxSupply.getProduct();
 
-        // Actualizar las cajas devueltas
-        if (dto.getReturnedBoxes() > 0) {
-            productBoxSupply.setBoxQuantity(productBoxSupply.getBoxQuantity() + dto.getReturnedBoxes());
-        }
-
-        // Actualizar el stock del producto
-        if (dto.getReturnedUnits() > 0) {
-            product.setStock(product.getStock() + dto.getReturnedUnits());
-        }
-
-        // Actualizar valores en la asignación
-        assignment.setReturnedUnits(dto.getReturnedUnits());
-        assignment.setReturnedBoxes(dto.getReturnedBoxes());
-
-        // Calcular las unidades totales asignadas originalmente
+        // Calcular unidades totales asignadas inicialmente
         int totalAssignedUnits = assignment.getAssignedBoxes() * productBoxSupply.getUnitsPerBox();
 
-        // Calcular las unidades vendidas
-        int totalSoldUnits = totalAssignedUnits - dto.getReturnedUnits();
-        assignment.setSoldUnits(totalSoldUnits);
+        // Validar límites para devoluciones
+        if (dto.getReturnedBoxes() > assignment.getAssignedBoxes()) {
+            throw new RuntimeException("No se pueden devolver más cajas de las asignadas.");
+        }
+        if (dto.getReturnedUnits() > totalAssignedUnits) {
+            throw new RuntimeException("No se pueden devolver más unidades de las asignadas.");
+        }
 
-        // Calcular las cajas vendidas
-        int soldBoxes = totalSoldUnits / productBoxSupply.getUnitsPerBox();
-        assignment.setSoldBoxes(soldBoxes);
+        // Calcular ventas en esta devolución
+        int soldBoxesInCurrentOperation = assignment.getAssignedBoxes() - dto.getReturnedBoxes();
+        int soldUnitsInCurrentOperation = totalAssignedUnits - dto.getReturnedUnits();
 
-        // Calcular ingreso total
+        // Primera devolución: sumar las devoluciones al inventario
+        if (!Boolean.TRUE.equals(assignment.getIsUsed())) {
+            productBoxSupply.setBoxQuantity(productBoxSupply.getBoxQuantity() + dto.getReturnedBoxes());
+            product.setStock(product.getStock() + dto.getReturnedUnits());
+        } else {
+            // Subsecuentes devoluciones: restar del inventario
+            productBoxSupply.setBoxQuantity(productBoxSupply.getBoxQuantity() - soldBoxesInCurrentOperation);
+            product.setStock(product.getStock() - soldUnitsInCurrentOperation);
+        }
+
+        // Validar y configurar `isUsed` en la primera devolución
+        if (assignment.getIsUsed() == null || !assignment.getIsUsed()) {
+            if (dto.getReturnedBoxes() > 0 || dto.getReturnedUnits() > 0) {
+                assignment.setIsUsed(true); // Configurar `isUsed` solo en la primera devolución
+            }
+        }
+
+        // Actualizar ventas totales
+        assignment.setSoldBoxes(assignment.getSoldBoxes() + soldBoxesInCurrentOperation);
+        assignment.setSoldUnits(assignment.getSoldUnits() + soldUnitsInCurrentOperation);
+
+        // Actualizar devoluciones acumuladas
+        assignment.setReturnedBoxes(assignment.getReturnedBoxes() + dto.getReturnedBoxes());
+        assignment.setReturnedUnits(assignment.getReturnedUnits() + dto.getReturnedUnits());
+
+        // Actualizar asignaciones restantes
+        int remainingAssignedBoxes = assignment.getAssignedBoxes() - soldBoxesInCurrentOperation;
+        int remainingAssignedUnits = totalAssignedUnits - soldUnitsInCurrentOperation;
+        assignment.setAssignedBoxes(remainingAssignedBoxes);
+        assignment.setAssignedUnits(remainingAssignedUnits);
+
+        // Calcular el ingreso total basado en las ventas totales
         double boxPrice = productBoxSupply.getBoxPrice();
-        assignment.setTotalRevenue(soldBoxes * boxPrice);
+        assignment.setTotalRevenue(assignment.getSoldBoxes() * boxPrice);
 
         // Guardar actualizaciones
         productRepository.save(product);
@@ -161,8 +182,8 @@ public class DailyAssignmentServiceImpl implements DailyAssignmentService
         int returnedBoxes = assignment.getReturnedBoxes() != null ? assignment.getReturnedBoxes() : 0;
 
         // Calcular las unidades y cajas asignadas originalmente
-        int assignedUnits = assignment.getAssignedBoxes() * productBoxSupply.getUnitsPerBox();
-        int assignedBoxes = assignment.getAssignedBoxes();
+        int assignedUnits = assignment.getTotalBoxes() * productBoxSupply.getUnitsPerBox();
+        int assignedBoxes = assignment.getTotalBoxes();
 
         // Si todo lo retornado coincide con lo asignado, no hacer ajustes en el inventario
         if (returnedUnits == assignedUnits && returnedBoxes == assignedBoxes) {
