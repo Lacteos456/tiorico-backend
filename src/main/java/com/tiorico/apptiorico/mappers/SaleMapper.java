@@ -21,14 +21,20 @@ public class SaleMapper {
         return SaleDTO.builder()
                 .id(sale.getId())
                 .userId(sale.getUser().getId())
-                .dailyAssignmentId(sale.getDailyAssignment().getId())
+                .dailyAssignmentId(
+                        sale.getDailyAssignment() != null ? sale.getDailyAssignment().getId() : null
+                )
                 .saleDate(sale.getSaleDate())
                 .totalPrice(sale.getTotalPrice())
                 .price(sale.getPrice())
                 .isActive(sale.getIsActive())
-                .saleDetails(sale.getSaleDetails().stream()
-                        .map(saleDetailsMapper::toDTO)
-                        .collect(Collectors.toList()))
+                .saleDetails(
+                        sale.getSaleDetails() != null
+                                ? sale.getSaleDetails().stream()
+                                .map(saleDetailsMapper::toDTO)
+                                .collect(Collectors.toList())
+                                : null
+                )
                 .build();
     }
 
