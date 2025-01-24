@@ -4,10 +4,7 @@ import com.tiorico.apptiorico.dtos.SaleDTO;
 import com.tiorico.apptiorico.mappers.SaleDetailsMapper;
 import com.tiorico.apptiorico.mappers.SaleMapper;
 import com.tiorico.apptiorico.models.*;
-import com.tiorico.apptiorico.repositories.DailyAssignmentRepository;
-import com.tiorico.apptiorico.repositories.ProductRepository;
-import com.tiorico.apptiorico.repositories.SaleRepository;
-import com.tiorico.apptiorico.repositories.UserRepository;
+import com.tiorico.apptiorico.repositories.*;
 import com.tiorico.apptiorico.services.SaleService;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +19,16 @@ public class SaleServiceImpl implements SaleService {
     private final UserRepository userRepository;
     private final DailyAssignmentRepository dailyAssignmentRepository;
     private final SaleDetailsMapper saleDetailsMapper;
+    private final SaleDetailRepository saleDetailRepository;
     private final ProductRepository productRepository;
 
-    public SaleServiceImpl(SaleRepository saleRepository, SaleMapper saleMapper, UserRepository userRepository, DailyAssignmentRepository dailyAssignmentRepository, SaleDetailsMapper saleDetailsMapper, ProductRepository productRepository) {
+    public SaleServiceImpl(SaleRepository saleRepository, SaleMapper saleMapper, UserRepository userRepository, DailyAssignmentRepository dailyAssignmentRepository, SaleDetailsMapper saleDetailsMapper, SaleDetailRepository saleDetailRepository, ProductRepository productRepository) {
         this.saleRepository = saleRepository;
         this.saleMapper = saleMapper;
         this.userRepository = userRepository;
         this.dailyAssignmentRepository = dailyAssignmentRepository;
         this.saleDetailsMapper = saleDetailsMapper;
+        this.saleDetailRepository = saleDetailRepository;
         this.productRepository = productRepository;
     }
 
@@ -50,15 +49,29 @@ public class SaleServiceImpl implements SaleService {
         DailyAssignment dailyAssignment = dailyAssignmentRepository.findById(saleDTO.getDailyAssignmentId())
                 .orElseThrow(() -> new RuntimeException("Asignación diaria no encontrada"));
 
+        // Obtener el ProductBoxSupply directamente desde DailyAssignment
+        ProductBoxSupply productBoxSupply = dailyAssignment.getProductBoxSupply();
+        int unitsPerBox = productBoxSupply.getUnitsPerBox();
+
         // Convertir el DTO de venta a entidad Sale
         Sale sale = saleMapper.toEntity(saleDTO, user, dailyAssignment);
 
         // Convertir y asignar los detalles de venta al objeto Sale
         List<SaleDetails> saleDetails = saleDTO.getSaleDetails().stream()
                 .map(detailDTO -> {
-                    // Obtener el producto correspondiente
+                    // Buscar el producto en el repositorio
                     Product product = productRepository.findById(detailDTO.getProductId())
                             .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+                    // Validar si hay inventario suficiente en la asignación diaria
+                    if (dailyAssignment.getTotalBoxes() < detailDTO.getBoxQuantitySold()) {
+                        throw new RuntimeException("Inventario insuficiente para la asignación diaria del producto");
+                    }
+
+                    // Actualizar inventario en la asignación diaria
+                    dailyAssignment.setTotalBoxes(dailyAssignment.getTotalBoxes() - detailDTO.getBoxQuantitySold());
+                    dailyAssignment.setTotalUnits(dailyAssignment.getTotalUnits() - (detailDTO.getBoxQuantitySold() * unitsPerBox));
+                    dailyAssignmentRepository.save(dailyAssignment);
 
                     // Convertir el DTO del detalle de venta a la entidad SaleDetails
                     SaleDetails saleDetail = saleDetailsMapper.toEntity(detailDTO, sale, product);
@@ -82,6 +95,29 @@ public class SaleServiceImpl implements SaleService {
 
         // Guardar la venta y devolver el DTO
         return saleMapper.toDTO(saleRepository.save(sale));
+    }
+
+    @Override
+    public void deleteSale(Integer saleId) {
+        Sale sale = saleRepository.findById(saleId)
+                .orElseThrow(() -> new RuntimeException("Venta no encontrada"));
+
+        // Restaurar inventario
+        sale.getSaleDetails().forEach(saleDetail -> {
+            DailyAssignment dailyAssignment = sale.getDailyAssignment();
+            ProductBoxSupply productBoxSupply = dailyAssignment.getProductBoxSupply();
+            int unitsPerBox = productBoxSupply.getUnitsPerBox();
+
+            dailyAssignment.setTotalBoxes(dailyAssignment.getTotalBoxes() + saleDetail.getBoxQuantitySold());
+            dailyAssignment.setTotalUnits(dailyAssignment.getTotalUnits() + (saleDetail.getBoxQuantitySold() * unitsPerBox));
+            dailyAssignmentRepository.save(dailyAssignment);
+        });
+
+        // Eliminar los detalles de la venta
+        saleDetailRepository.deleteAll(sale.getSaleDetails());
+
+        // Eliminar la venta
+        saleRepository.delete(sale);
     }
 
     @Override

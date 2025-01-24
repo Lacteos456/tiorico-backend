@@ -23,6 +23,12 @@ public class SaleController {
         return ResponseEntity.ok(saleService.createSale(saleDTO));
     }
 
+    @DeleteMapping("/{saleId}")
+    public ResponseEntity<Void> deleteSale(@PathVariable Integer saleId) {
+        saleService.deleteSale(saleId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<SaleDTO>> getSalesByUserId(@PathVariable Integer userId) {
         return ResponseEntity.ok(saleService.getSalesByUserId(userId));
